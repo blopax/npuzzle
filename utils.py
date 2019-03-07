@@ -1,10 +1,96 @@
-<<<<<<< HEAD
+
 import math
 import copy
 
+def fill_right(n, sorted_list, x, y, i):
+    """
+    Fill the number from left to right until it reachs the border or an already filled slot, update i, x, y values"
+    :param int n: size of puzzle
+    :param list sorted_list: list with the position of each value in the good spot
+    :param int i: current value to be added int the list
+    :param int x: x coordinate in the puzzle
+    :param int y: y coordinate in the puzzle
+    :return list: list of size n^2 with the solution
+    """
 
-=======
->>>>>>> create goal
+    #print("RIGHT START")
+    if sorted_list[(n*y) + x] != None:
+        x+= 1
+
+    while x < n - 1 and sorted_list[(n*y) + x] == None and i < n**2:
+        #print("RIGHT WHILE IN")
+        sorted_list[(n*y) + x] = i
+        i += 1
+        if sorted_list[(n*y) + x + 1] == None:
+            x += 1
+    #print("RIGHT END")
+    return sorted_list, x, y, i
+
+def fill_down(n, sorted_list, x, y, i):
+    """
+    Fill the number from up to down until it reachs the border or an already filled slot, update i, x, y values"
+    :param int n: size of puzzle
+    :param list sorted_list: list with the position of each value in the good spot
+    :param int i: current value to be added int the list
+    :param int x: x coordinate in the puzzle
+    :param int y: y coordinate in the puzzle
+    :return list: list of size n^2 with the solution
+    """
+    #print("DOWN START")
+    print("x = {0} y = {1} i = {2}".format(x,y,i))
+    if sorted_list[(n*y) + x] != None:
+        y+= 1
+        
+    while y < n - 1 and sorted_list[(n*y) + x] == None and i < n**2:
+        #print("x = {0} y = {1} i = {2} - (n*y) + x = {3}".format(x,y,i,(n*y + x)))
+        #print("DOWN WHILE IN")
+        sorted_list[(n*y) + x] = i
+        i += 1
+        if sorted_list[(n*(y+1)) + x] == None:
+            y += 1
+    #print("DOWN END")
+    return sorted_list, x, y, i
+
+def fill_left(n, sorted_list, x, y, i):
+    """
+    Fill the number from right to left until it reachs the border or an already filled slot, update i, x, y values"
+    :param int n: size of puzzle
+    :param list sorted_list: list with the position of each value in the good spot
+    :param int i: current value to be added int the list
+    :param int x: x coordinate in the puzzle
+    :param int y: y coordinate in the puzzle
+    :return list: list of size n^2 with the solution
+    """
+    if sorted_list[(n*y) + x] != None and x > 0:
+        x-= 1
+        
+    while x >= 0 and sorted_list[(n*y) + x] == None and i < n**2:
+        sorted_list[(n*y) + x] = i
+        i += 1
+        if x > 0 and sorted_list[(n*y) + x - 1] == None:
+            x -= 1
+    return sorted_list, x, y, i
+
+def fill_up(n, sorted_list, x, y, i):
+    """
+    Fill the number from down to up until it reachs the border or an already filled slot, update i, x, y values"
+    :param int n: size of puzzle
+    :param list sorted_list: list with the position of each value in the good spot
+    :param int i: current value to be added int the list
+    :param int x: x coordinate in the puzzle
+    :param int y: y coordinate in the puzzle
+    :return list: list of size n^2 with the solution
+    """
+    if sorted_list[(n*y) + x] != None:
+        y-= 1
+        
+    while y > 0 and sorted_list[(n*y) + x] == None and i < n**2:
+        sorted_list[(n*y) + x] = i
+        i += 1
+        if y > 1 and sorted_list[(n*(y-1)) + x] == None:
+            y -= 1
+    return sorted_list, x, y, i
+
 def create_goal(n) ->list:
     """
     Returns as a list the goal to reach for a n-puzzle of size n in a snail style"
@@ -12,16 +98,31 @@ def create_goal(n) ->list:
     :return list: list of size n^2 with the solution
     """
 
-    sorted_list = []
+    sorted_list = [None] * (n**2)
     i = 1
     x = 0
     y = 0
 
-    while i < n:
-        sorted_list.append(i)
-        i += 1
-        x += 1
-    y+= 1
+    while i < n**2:
+
+        if i < n**2:
+            sorted_list, x, y, i = fill_right(n, sorted_list, x, y, i)
+            print("x = {0} y = {1} i = {2}".format(x,y,i))
+        if i < n**2:
+            sorted_list, x, y, i = fill_down(n, sorted_list, x, y, i)
+            print("x = {0} y = {1} i = {2}".format(x,y,i))
+        if i < n**2:
+            sorted_list, x, y, i = fill_left(n, sorted_list, x, y, i)
+            print("x = {0} y = {1} i = {2}".format(x,y,i))
+        if i < n**2:
+            sorted_list, x, y, i = fill_up(n, sorted_list, x, y, i)
+            print("x = {0} y = {1} i = {2}".format(x,y,i))
+
+    k = 0
+    while sorted_list[k] != None:
+        k += 1
+    sorted_list[k] = 0
+
     print(sorted_list)
 
 
@@ -88,3 +189,10 @@ if __name__ == "__main__":
     print(Q)
     Q = action(P, 8)
     print(Q)
+
+if __name__ == "__main__":
+    create_goal(3)
+    create_goal(4)
+    create_goal(5)
+    #create_goal(10)
+    #create_goal(50)
