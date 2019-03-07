@@ -1,10 +1,10 @@
-
 import math
 import copy
 
+
 def fill_right(n, sorted_list, x, y, i):
     """
-    Fill the number from left to right until it reachs the border or an already filled slot, update i, x, y values"
+    Fill the number from left to right until it reaches the border or an already filled slot, update i, x, y values"
     :param int n: size of puzzle
     :param list sorted_list: list with the position of each value in the good spot
     :param int i: current value to be added int the list
@@ -13,22 +13,20 @@ def fill_right(n, sorted_list, x, y, i):
     :return list: list of size n^2 with the solution
     """
 
-    #print("RIGHT START")
-    if sorted_list[(n*y) + x] != None:
-        x+= 1
+    if sorted_list[(n * y) + x] is not None:
+        x += 1
 
-    while x < n - 1 and sorted_list[(n*y) + x] == None and i < n**2:
-        #print("RIGHT WHILE IN")
-        sorted_list[(n*y) + x] = i
+    while x < n - 1 and sorted_list[(n * y) + x] is None and i < n ** 2:
+        sorted_list[(n * y) + x] = i % (n * n)
         i += 1
-        if sorted_list[(n*y) + x + 1] == None:
+        if sorted_list[(n * y) + x + 1] is None:
             x += 1
-    #print("RIGHT END")
     return sorted_list, x, y, i
+
 
 def fill_down(n, sorted_list, x, y, i):
     """
-    Fill the number from up to down until it reachs the border or an already filled slot, update i, x, y values"
+    Fill the number from up to down until it reaches the border or an already filled slot, update i, x, y values"
     :param int n: size of puzzle
     :param list sorted_list: list with the position of each value in the good spot
     :param int i: current value to be added int the list
@@ -36,24 +34,20 @@ def fill_down(n, sorted_list, x, y, i):
     :param int y: y coordinate in the puzzle
     :return list: list of size n^2 with the solution
     """
-    #print("DOWN START")
-    print("x = {0} y = {1} i = {2}".format(x,y,i))
-    if sorted_list[(n*y) + x] != None:
-        y+= 1
-        
-    while y < n - 1 and sorted_list[(n*y) + x] == None and i < n**2:
-        #print("x = {0} y = {1} i = {2} - (n*y) + x = {3}".format(x,y,i,(n*y + x)))
-        #print("DOWN WHILE IN")
-        sorted_list[(n*y) + x] = i
+    if sorted_list[(n * y) + x] is not None:
+        y += 1
+
+    while y < n - 1 and sorted_list[(n * y) + x] is None and i < n ** 2:
+        sorted_list[(n * y) + x] = i % (n * n)
         i += 1
-        if sorted_list[(n*(y+1)) + x] == None:
+        if sorted_list[(n * (y + 1)) + x] is None:
             y += 1
-    #print("DOWN END")
     return sorted_list, x, y, i
+
 
 def fill_left(n, sorted_list, x, y, i):
     """
-    Fill the number from right to left until it reachs the border or an already filled slot, update i, x, y values"
+    Fill the number from right to left until it reaches the border or an already filled slot, update i, x, y values"
     :param int n: size of puzzle
     :param list sorted_list: list with the position of each value in the good spot
     :param int i: current value to be added int the list
@@ -61,19 +55,20 @@ def fill_left(n, sorted_list, x, y, i):
     :param int y: y coordinate in the puzzle
     :return list: list of size n^2 with the solution
     """
-    if sorted_list[(n*y) + x] != None and x > 0:
-        x-= 1
-        
-    while x >= 0 and sorted_list[(n*y) + x] == None and i < n**2:
-        sorted_list[(n*y) + x] = i
+    if sorted_list[(n * y) + x] is not None and x > 0:
+        x -= 1
+
+    while x >= 0 and sorted_list[(n * y) + x] is None and i < n ** 2:
+        sorted_list[(n * y) + x] = i % (n * n)
         i += 1
-        if x > 0 and sorted_list[(n*y) + x - 1] == None:
+        if x > 0 and sorted_list[(n * y) + x - 1] is None:
             x -= 1
     return sorted_list, x, y, i
 
+
 def fill_up(n, sorted_list, x, y, i):
     """
-    Fill the number from down to up until it reachs the border or an already filled slot, update i, x, y values"
+    Fill the number from down to up until it reaches the border or an already filled slot, update i, x, y values"
     :param int n: size of puzzle
     :param list sorted_list: list with the position of each value in the good spot
     :param int i: current value to be added int the list
@@ -81,52 +76,46 @@ def fill_up(n, sorted_list, x, y, i):
     :param int y: y coordinate in the puzzle
     :return list: list of size n^2 with the solution
     """
-    if sorted_list[(n*y) + x] != None:
-        y-= 1
-        
-    while y > 0 and sorted_list[(n*y) + x] == None and i < n**2:
-        sorted_list[(n*y) + x] = i
+    if sorted_list[(n * y) + x] is not None:
+        y -= 1
+
+    while y > 0 and sorted_list[(n * y) + x] is None and i < n ** 2:
+        sorted_list[(n * y) + x] = i % (n * n)
         i += 1
-        if y > 1 and sorted_list[(n*(y-1)) + x] == None:
+        if y > 1 and sorted_list[(n * (y - 1)) + x] is None:
             y -= 1
     return sorted_list, x, y, i
 
-def create_goal(n) ->list:
+
+def create_goal(n) -> list:
     """
     Returns as a list the goal to reach for a n-puzzle of size n in a snail style"
     :param int n: size of puzzle
     :return list: list of size n^2 with the solution
     """
 
-    sorted_list = [None] * (n**2)
+    sorted_list = [None] * (n ** 2)
     i = 1
-    x = 0
-    y = 0
+    x, y = 0, 0
 
-    while i < n**2:
-
-        if i < n**2:
+    while i < n ** 2:
+        if i < n ** 2:
             sorted_list, x, y, i = fill_right(n, sorted_list, x, y, i)
-            print("x = {0} y = {1} i = {2}".format(x,y,i))
-        if i < n**2:
+        if i < n ** 2:
             sorted_list, x, y, i = fill_down(n, sorted_list, x, y, i)
-            print("x = {0} y = {1} i = {2}".format(x,y,i))
-        if i < n**2:
+        if i < n ** 2:
             sorted_list, x, y, i = fill_left(n, sorted_list, x, y, i)
-            print("x = {0} y = {1} i = {2}".format(x,y,i))
-        if i < n**2:
+        if i < n ** 2:
             sorted_list, x, y, i = fill_up(n, sorted_list, x, y, i)
-            print("x = {0} y = {1} i = {2}".format(x,y,i))
 
     k = 0
-    while sorted_list[k] != None:
+    while sorted_list[k] is not None:
         k += 1
     sorted_list[k] = 0
+    return sorted_list
 
-    print(sorted_list)
 
-
-def action(puzzle, tile) ->list:
+def action(puzzle, tile) -> list:
     """
     Returns the state of the puzzle after swapping tile. Returns error if tile can not be swapped.
     :param list puzzle:
@@ -135,6 +124,7 @@ def action(puzzle, tile) ->list:
     """
 
     try:
+        index_zero, index_tile = 0, 0
         for index, item in enumerate(puzzle):
             if item == 0:
                 index_zero = index
@@ -159,40 +149,61 @@ def action(puzzle, tile) ->list:
     except Exception as e:
         print(e)
 
-    #should probably create class Tile with value, index, x, y
+    # should probably create class Tile with value, index, x, y
 
 
-def print_puzzle(puzzle) ->None:
+def print_puzzle(puzzle) -> None:
     """
 
     :param list puzzle:
     :return: void function
     """
+    length = len(puzzle)
+    size = int(math.sqrt(length))
+    padding = 0
+    while length // 10 > 0:
+        length //= 10
+        padding += 1
+    padding += 1
+
+    for y in range(size):
+        for x in range(size):
+            if x < size - 1:
+                print("{:{}}".format(puzzle[y * size + x], padding), end=', ')
+            elif y < size - 1:
+                print("{:{}}".format(puzzle[y * size + x], padding))
+            else:
+                print("{:{}}".format(puzzle[y * size + x], padding), end="\n\n")
 
 
 if __name__ == "__main__":
     P = [0, 1, 2, 3, 4, 5, 6, 7, 8]
-    print(P)
+    print_puzzle(P)
     Q = action(P, 1)
-    print(Q)
-    Q = action(P, 2)
-    print(Q)
-    Q = action(P, 3)
-    print(Q)
-    Q = action(P, 4)
-    print(Q)
-    Q = action(P, 5)
-    print(Q)
-    Q = action(P, 6)
-    print(Q)
-    Q = action(P, 7)
-    print(Q)
-    Q = action(P, 8)
-    print(Q)
+    print_puzzle(Q)
+    # print_puzzle_puzzle(Q)
+    # Q = action(P, 2)
+    # print_puzzle(Q)
+    # Q = action(P, 3)
+    # print_puzzle(Q)
+    # Q = action(P, 4)
+    # print_puzzle(Q)
+    # Q = action(P, 5)
+    # print_puzzle(Q)
+    # Q = action(P, 6)
+    # print_puzzle(Q)
+    # Q = action(P, 7)
+    # print_puzzle(Q)
+    # Q = action(P, 8)
+    # print_puzzle(Q)
 
-if __name__ == "__main__":
-    create_goal(3)
-    create_goal(4)
-    create_goal(5)
-    #create_goal(10)
-    #create_goal(50)
+    P = create_goal(3)
+    print_puzzle(P)
+    P = create_goal(4)
+    print_puzzle(P)
+    P = create_goal(5)
+    print_puzzle(P)
+    # P = create_goal(10)
+    # print_puzzle(P)
+    # P = create_goal(30)
+    # print_puzzle(P)
