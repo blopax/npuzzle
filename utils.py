@@ -1,13 +1,28 @@
+<<<<<<< HEAD
 import math
 import copy
 
 
+=======
+>>>>>>> create goal
 def create_goal(n) ->list:
     """
     Returns as a list the goal to reach for a n-puzzle of size n in a snail style"
     :param int n: size of puzzle
     :return list: list of size n^2 with the solution
     """
+
+    sorted_list = []
+    i = 1
+    x = 0
+    y = 0
+
+    while i < n:
+        sorted_list.append(i)
+        i += 1
+        x += 1
+    y+= 1
+    print(sorted_list)
 
 
 def action(puzzle, tile) ->list:
