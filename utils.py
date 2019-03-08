@@ -149,7 +149,7 @@ def action(puzzle, tile) -> list:
     # should probably create class Tile with value, index, x, y
 
 
-def print_puzzle(puzzle) -> None:
+def puzzle_formatted_str(puzzle) -> None:
     """
 
     :param list puzzle:
@@ -163,21 +163,25 @@ def print_puzzle(puzzle) -> None:
         padding += 1
     padding += 1
 
+    string = ""
     for y in range(size):
         for x in range(size):
             if x < size - 1:
-                print("{:{}}".format(puzzle[y * size + x], padding), end=', ')
+                string += "{:{}}, ".format(puzzle[y * size + x], padding)
             elif y < size - 1:
-                print("{:{}}".format(puzzle[y * size + x], padding))
+                string += "{:{}}\n".format(puzzle[y * size + x], padding)
             else:
-                print("{:{}}".format(puzzle[y * size + x], padding), end="\n\n")
+                string += "{:{}}\n\n".format(puzzle[y * size + x], padding)
+    return string
+
+
 
 
 if __name__ == "__main__":
     P = [0, 1, 2, 3, 4, 5, 6, 7, 8]
-    print_puzzle(P)
+    print(puzzle_formatted_str(P))
     Q = action(P, 1)
-    print_puzzle(Q)
+    print(puzzle_formatted_str(Q))
     # print_puzzle_puzzle(Q)
     # Q = action(P, 2)
     # print_puzzle(Q)
