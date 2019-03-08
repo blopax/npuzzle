@@ -13,13 +13,13 @@ def fill_right(n, sorted_list, x, y, i):
     :return list: list of size n^2 with the solution
     """
 
-    if sorted_list[(n*y) + x] != 0:
-        x+= 1
+    if sorted_list[(n * y) + x] != 0:
+        x += 1
 
-    while x < n - 1 and sorted_list[(n*y) + x] == 0 and i < n** 2:
-        sorted_list[(n *y ) + x] = i
+    while x < n - 1 and sorted_list[(n * y) + x] == 0 and i < n ** 2:
+        sorted_list[(n * y) + x] = i
         i += 1
-        if sorted_list[(n*y) + x + 1] == 0:
+        if sorted_list[(n * y) + x + 1] == 0:
             x += 1
     return sorted_list, x, y, i
 
@@ -35,13 +35,13 @@ def fill_down(n, sorted_list, x, y, i):
     :return list: list of size n^2 with the solution
     """
 
-    if sorted_list[(n*y) + x] != 0:
-        y+= 1
-        
-    while y < n - 1 and sorted_list[(n*y) + x] == 0 and i < n**2:
-        sorted_list[(n*y) + x] = i
+    if sorted_list[(n * y) + x] != 0:
+        y += 1
+
+    while y < n - 1 and sorted_list[(n * y) + x] == 0 and i < n ** 2:
+        sorted_list[(n * y) + x] = i
         i += 1
-        if sorted_list[(n*(y+1)) + x] == 0:
+        if sorted_list[(n * (y + 1)) + x] == 0:
             y += 1
     return sorted_list, x, y, i
 
@@ -56,13 +56,13 @@ def fill_left(n, sorted_list, x, y, i):
     :param int y: y coordinate in the puzzle
     :return list: list of size n^2 with the solution
     """
-    if sorted_list[(n*y) + x] != 0 and x > 0:
-        x-= 1
-        
-    while x >= 0 and sorted_list[(n*y) + x] == 0 and i < n**2:
-        sorted_list[(n*y) + x] = i
+    if sorted_list[(n * y) + x] != 0 and x > 0:
+        x -= 1
+
+    while x >= 0 and sorted_list[(n * y) + x] == 0 and i < n ** 2:
+        sorted_list[(n * y) + x] = i
         i += 1
-        if x > 0 and sorted_list[(n*y) + x - 1] == 0:
+        if x > 0 and sorted_list[(n * y) + x - 1] == 0:
             x -= 1
     return sorted_list, x, y, i
 
@@ -77,13 +77,13 @@ def fill_up(n, sorted_list, x, y, i):
     :param int y: y coordinate in the puzzle
     :return list: list of size n^2 with the solution
     """
-    if sorted_list[(n*y) + x] != 0:
-        y-= 1
-        
-    while y > 0 and sorted_list[(n*y) + x] == 0 and i < n**2:
-        sorted_list[(n*y) + x] = i
+    if sorted_list[(n * y) + x] != 0:
+        y -= 1
+
+    while y > 0 and sorted_list[(n * y) + x] == 0 and i < n ** 2:
+        sorted_list[(n * y) + x] = i
         i += 1
-        if y > 1 and sorted_list[(n*(y-1)) + x] == 0:
+        if y > 1 and sorted_list[(n * (y - 1)) + x] == 0:
             y -= 1
     return sorted_list, x, y, i
 
@@ -95,7 +95,7 @@ def create_goal(n) -> list:
     :return list: list of size n^2 with the solution
     """
 
-    sorted_list = [0] * (n**2)
+    sorted_list = [0] * (n ** 2)
     i = 1
     x, y = 0, 0
 
@@ -175,8 +175,6 @@ def puzzle_formatted_str(puzzle) -> None:
     return string
 
 
-
-
 if __name__ == "__main__":
     P = [0, 1, 2, 3, 4, 5, 6, 7, 8]
     print(puzzle_formatted_str(P))
@@ -199,11 +197,11 @@ if __name__ == "__main__":
     # print_puzzle(Q)
 
     P = create_goal(3)
-    print_puzzle(P)
+    puzzle_formatted_str(P)
     P = create_goal(4)
-    print_puzzle(P)
+    puzzle_formatted_str(P)
     P = create_goal(5)
-    print_puzzle(P)
+    puzzle_formatted_str(P)
     # P = create_goal(10)
     # print_puzzle(P)
     # P = create_goal(30)
