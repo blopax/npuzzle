@@ -13,25 +13,13 @@ def fill_right(n, sorted_list, x, y, i):
     :return list: list of size n^2 with the solution
     """
 
-<<<<<<< HEAD
-    if sorted_list[(n * y) + x] is not None:
-        x += 1
-
-    while x < n - 1 and sorted_list[(n * y) + x] is None and i < n ** 2:
-        sorted_list[(n * y) + x] = i % (n * n)
-        i += 1
-        if sorted_list[(n * y) + x + 1] is None:
-=======
-    #print("RIGHT START")
     if sorted_list[(n*y) + x] != 0:
         x+= 1
 
-    while x < n - 1 and sorted_list[(n*y) + x] == 0 and i < n**2:
-        #print("RIGHT WHILE IN")
-        sorted_list[(n*y) + x] = i
+    while x < n - 1 and sorted_list[(n*y) + x] == 0 and i < n** 2:
+        sorted_list[(n *y ) + x] = i
         i += 1
         if sorted_list[(n*y) + x + 1] == 0:
->>>>>>> replace None by 0
             x += 1
     return sorted_list, x, y, i
 
@@ -46,27 +34,14 @@ def fill_down(n, sorted_list, x, y, i):
     :param int y: y coordinate in the puzzle
     :return list: list of size n^2 with the solution
     """
-<<<<<<< HEAD
-    if sorted_list[(n * y) + x] is not None:
-        y += 1
 
-    while y < n - 1 and sorted_list[(n * y) + x] is None and i < n ** 2:
-        sorted_list[(n * y) + x] = i % (n * n)
-        i += 1
-        if sorted_list[(n * (y + 1)) + x] is None:
-=======
-    #print("DOWN START")
-    print("x = {0} y = {1} i = {2}".format(x,y,i))
     if sorted_list[(n*y) + x] != 0:
         y+= 1
         
     while y < n - 1 and sorted_list[(n*y) + x] == 0 and i < n**2:
-        #print("x = {0} y = {1} i = {2} - (n*y) + x = {3}".format(x,y,i,(n*y + x)))
-        #print("DOWN WHILE IN")
         sorted_list[(n*y) + x] = i
         i += 1
         if sorted_list[(n*(y+1)) + x] == 0:
->>>>>>> replace None by 0
             y += 1
     return sorted_list, x, y, i
 
@@ -81,15 +56,6 @@ def fill_left(n, sorted_list, x, y, i):
     :param int y: y coordinate in the puzzle
     :return list: list of size n^2 with the solution
     """
-<<<<<<< HEAD
-    if sorted_list[(n * y) + x] is not None and x > 0:
-        x -= 1
-
-    while x >= 0 and sorted_list[(n * y) + x] is None and i < n ** 2:
-        sorted_list[(n * y) + x] = i % (n * n)
-        i += 1
-        if x > 0 and sorted_list[(n * y) + x - 1] is None:
-=======
     if sorted_list[(n*y) + x] != 0 and x > 0:
         x-= 1
         
@@ -97,7 +63,6 @@ def fill_left(n, sorted_list, x, y, i):
         sorted_list[(n*y) + x] = i
         i += 1
         if x > 0 and sorted_list[(n*y) + x - 1] == 0:
->>>>>>> replace None by 0
             x -= 1
     return sorted_list, x, y, i
 
@@ -112,15 +77,6 @@ def fill_up(n, sorted_list, x, y, i):
     :param int y: y coordinate in the puzzle
     :return list: list of size n^2 with the solution
     """
-<<<<<<< HEAD
-    if sorted_list[(n * y) + x] is not None:
-        y -= 1
-
-    while y > 0 and sorted_list[(n * y) + x] is None and i < n ** 2:
-        sorted_list[(n * y) + x] = i % (n * n)
-        i += 1
-        if y > 1 and sorted_list[(n * (y - 1)) + x] is None:
-=======
     if sorted_list[(n*y) + x] != 0:
         y-= 1
         
@@ -128,7 +84,6 @@ def fill_up(n, sorted_list, x, y, i):
         sorted_list[(n*y) + x] = i
         i += 1
         if y > 1 and sorted_list[(n*(y-1)) + x] == 0:
->>>>>>> replace None by 0
             y -= 1
     return sorted_list, x, y, i
 
@@ -140,11 +95,7 @@ def create_goal(n) -> list:
     :return list: list of size n^2 with the solution
     """
 
-<<<<<<< HEAD
-    sorted_list = [None] * (n ** 2)
-=======
     sorted_list = [0] * (n**2)
->>>>>>> replace None by 0
     i = 1
     x, y = 0, 0
 
@@ -158,16 +109,8 @@ def create_goal(n) -> list:
         if i < n ** 2:
             sorted_list, x, y, i = fill_up(n, sorted_list, x, y, i)
 
-<<<<<<< HEAD
-    k = 0
-    while sorted_list[k] is not None:
-        k += 1
-    sorted_list[k] = 0
     return sorted_list
 
-=======
-    print(sorted_list)
->>>>>>> replace None by 0
 
 def action(puzzle, tile) -> list:
     """
@@ -234,7 +177,6 @@ if __name__ == "__main__":
     P = [0, 1, 2, 3, 4, 5, 6, 7, 8]
     print_puzzle(P)
     Q = action(P, 1)
-<<<<<<< HEAD
     print_puzzle(Q)
     # print_puzzle_puzzle(Q)
     # Q = action(P, 2)
@@ -262,27 +204,3 @@ if __name__ == "__main__":
     # print_puzzle(P)
     # P = create_goal(30)
     # print_puzzle(P)
-=======
-    print(Q)
-    Q = action(P, 2)
-    print(Q)
-    Q = action(P, 3)
-    print(Q)
-    Q = action(P, 4)
-    print(Q)
-    Q = action(P, 5)
-    print(Q)
-    Q = action(P, 6)
-    print(Q)
-    Q = action(P, 7)
-    print(Q)
-    Q = action(P, 8)
-    print(Q)
-
-if __name__ == "__main__":
-    create_goal(3)
-    #create_goal(4)
-    #create_goal(5)
-    #create_goal(10)
-    #create_goal(50)
->>>>>>> replace None by 0
