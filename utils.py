@@ -143,7 +143,7 @@ def action(puzzle, tile) -> list:
         new_state_puzzle[int(y_tile * size + x_tile)] = 0
         new_state_puzzle[int(y_zero * size + x_zero)] = tile
         return new_state_puzzle
-    except Exception as e:
+    except Exception("No swap possible") as e:
         print(e)
 
     # should probably create class Tile with value, index, x, y

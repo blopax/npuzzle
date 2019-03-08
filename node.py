@@ -2,6 +2,8 @@ import math
 import utils
 
 
+# TODO goal mettre var globale heuristique manhattan = math.fabs(x - x.goal) + math.fabs(y - y.goal)
+
 class Node:
     def __init__(self, parent=None, moved_tile=None, state=None, goal=None):
         self.parent = parent
@@ -16,15 +18,18 @@ class Node:
             self.goal = parent.goal
         else:
             self.goal = goal
-        self.evaluation = self.cost + self.heuristic(goal)
+        self.heuristic = self.heuristic_misplaced(self.goal)
+        self.evaluation = self.cost + self.heuristic
         self.possible_actions = self.find_possible_actions()
 
     def __str__(self):
         string = """id(parent) = {}
 moved_tile = {}
 cost = {}
+heuristic = {}
 evaluation = {}
-possible_actions = {}\n""".format(id(self.parent), self.moved_tile, self.cost, self.evaluation, self.possible_actions)
+possible_actions = {}\n""".format(id(self.parent), self.moved_tile,
+                                  self.cost, self.heuristic, self.evaluation, self.possible_actions)
         string += "state =\n{}".format(utils.puzzle_formatted_str(self.state))
         return string
 
@@ -50,7 +55,7 @@ possible_actions = {}\n""".format(id(self.parent), self.moved_tile, self.cost, s
             possible_actions.remove(self.moved_tile)
         return possible_actions
 
-    def heuristic(self, goal):
+    def heuristic_misplaced(self, goal):
         misplaced_tiles = 0
         for index, item in enumerate(self.state):
             if item != 0 and item != goal[index]:
@@ -62,3 +67,12 @@ if __name__ == "__main__":
     initial_node = Node(None, None, [1, 0, 2, 3, 4, 5, 6, 7, 8], utils.create_goal(3))
     print(initial_node.__str__())
     print("goal =\n{}".format(utils.puzzle_formatted_str(utils.create_goal(3))))
+    second_node = Node(initial_node, 2, None, None)
+    print(second_node.__str__())
+    print("goal =\n{}".format(utils.puzzle_formatted_str(utils.create_goal(3))))
+
+
+
+Algo
+List+noeuds_crees --> ordonnera en fonction evaluation
+
