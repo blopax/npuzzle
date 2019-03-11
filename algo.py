@@ -2,6 +2,9 @@ import node
 import utils
 
 
+goal = utils.create_goal(3)
+
+
 def a_star(initial_node):
     created_nodes = 1
     nodes_queue = [initial_node]
@@ -9,17 +12,19 @@ def a_star(initial_node):
     if initial_node.finished is True:
         return finished(initial_node, created_nodes)
     while nodes_queue:
-        best_node = min(nodes_queue, key=lambda x: x.evaluation)  # selection du best node
+        sorted_queue = sorted(nodes_queue, key=lambda x: x.evaluation)  # selection du best node
+        best_node = sorted_queue[0]
         for action in best_node.possible_actions:
-            new_node = node.Node(best_node, action)
-            created_nodes += 1
-            if created_nodes % 10000 == 0:
-                print(created_nodes, len(explored_states), len(nodes_queue))
-            if new_node.finished is True:
-                return finished(new_node, created_nodes)
-            if new_node.state not in explored_states:
+            state = utils.action(best_node.state, action)
+            if state not in explored_states:
+                new_node = node.Node(best_node, action, state)
+                created_nodes += 1
                 nodes_queue.append(new_node)
                 explored_states.append(new_node.state)
+                if created_nodes % 10000 == 0:
+                    print(created_nodes, len(explored_states), len(nodes_queue))
+                if new_node.finished is True:
+                    return finished(new_node, created_nodes)
         nodes_queue.remove(best_node)
     print("no Solutions, {} nodes created, {} states explored, {} in queue".format(created_nodes, len(explored_states),
                                                                                    len(nodes_queue)))
@@ -36,7 +41,7 @@ def finished(finish_node, created_nodes):
 
 
 if __name__ == "__main__":
-    init_state = [5, 2, 3, 8, 4, 7, 6, 1, 0]
+    init_state = [5, 2, 3, 8, 4, 7, 1, 6, 0]
     # init_state = [1, 3, 2, 0]
     print(utils.puzzle_formatted_str(init_state))
     init_node = node.Node(None, None, init_state)

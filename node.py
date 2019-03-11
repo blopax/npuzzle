@@ -1,7 +1,6 @@
 import math
 import utils
-
-goal = utils.create_goal(3)
+import algo
 
 
 class Node:
@@ -10,14 +9,16 @@ class Node:
         self.moved_tile = moved_tile
         if parent is None:
             self.cost = 0
-            self.state = state
         else:
             self.cost = self.parent.cost + 1
+        if state is None:
             self.state = utils.action(parent.state, moved_tile)
-        self.heuristic = self.heuristic_manhattan(goal)
+        else:
+            self.state = state
+        self.heuristic = self.heuristic_manhattan(algo.goal)
         self.evaluation = self.cost + self.heuristic
         self.possible_actions = self.find_possible_actions()
-        self.finished = (self.state == goal)
+        self.finished = (self.state == algo.goal)
 
     def __str__(self):
         string = """id(parent) = {}

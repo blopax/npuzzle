@@ -2,6 +2,9 @@ import math
 import copy
 
 
+# size
+
+
 def fill_right(n, sorted_list, x, y, i):
     """
     Fill the number from left to right until it reaches the border or an already filled slot, update i, x, y values"
@@ -175,11 +178,28 @@ def puzzle_formatted_str(puzzle) -> None:
     return string
 
 
+def puzzle_has_snail_solution(puzzle):
+    n = 0
+    for index, tile in enumerate(puzzle[:-1]):
+        for sub_index, following_tile in enumerate(puzzle[index + 1:]):
+            if tile > following_tile > 0:
+                n += 1
+    print(n)
+    return n % 2 == 1
+
+
 if __name__ == "__main__":
     P = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+    puzzle_has_snail_solution(P)
+    P = [1, 2, 3, 4, 0, 5, 6, 7, 8]
+    puzzle_has_snail_solution(P)
+    P = [0, 2, 1, 3, 4, 5, 6, 7, 8]
+    puzzle_has_snail_solution(P)
+    P = [5, 2, 3, 8, 4, 7, 1, 6, 0]
+    puzzle_has_snail_solution(P)
     print(puzzle_formatted_str(P))
-    Q = action(P, 1)
-    print(puzzle_formatted_str(Q))
+    # Q = action(P, 1)
+    # print(puzzle_formatted_str(Q))
     # print_puzzle_puzzle(Q)
     # Q = action(P, 2)
     # print_puzzle(Q)
@@ -196,12 +216,12 @@ if __name__ == "__main__":
     # Q = action(P, 8)
     # print_puzzle(Q)
 
-    P = create_goal(3)
-    puzzle_formatted_str(P)
-    P = create_goal(4)
-    puzzle_formatted_str(P)
-    P = create_goal(5)
-    puzzle_formatted_str(P)
+    # P = create_goal(3)
+    # puzzle_formatted_str(P)
+    # P = create_goal(4)
+    # puzzle_formatted_str(P)
+    # P = create_goal(5)
+    # puzzle_formatted_str(P)
     # P = create_goal(10)
     # print_puzzle(P)
     # P = create_goal(30)
