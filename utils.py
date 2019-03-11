@@ -134,8 +134,8 @@ def action(puzzle, tile) -> list:
         x_zero = index_zero % size
         y_zero = index_zero // size
 
-        vertical_swap = (x_tile == x_zero and math.fabs(y_tile - y_zero) == 1)
-        horizontal_swap = (y_tile == y_zero and math.fabs(x_tile - x_zero) == 1)
+        vertical_swap = (x_tile == x_zero and abs(y_tile - y_zero) == 1)
+        horizontal_swap = (y_tile == y_zero and abs(x_tile - x_zero) == 1)
         if not (horizontal_swap or vertical_swap):
             raise Exception("No swap possible")
 

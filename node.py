@@ -1,11 +1,11 @@
 import math
 import utils
 
+goal = utils.create_goal(3)
 
-# TODO goal mettre var globale heuristique manhattan = math.fabs(x - x.goal) + math.fabs(y - y.goal)
 
 class Node:
-    def __init__(self, parent=None, moved_tile=None, state=None, goal=None):
+    def __init__(self, parent=None, moved_tile=None, state=None):
         self.parent = parent
         self.moved_tile = moved_tile
         if parent is None:
@@ -14,13 +14,10 @@ class Node:
         else:
             self.cost = self.parent.cost + 1
             self.state = utils.action(parent.state, moved_tile)
-        if goal is None:
-            self.goal = parent.goal
-        else:
-            self.goal = goal
-        self.heuristic = self.heuristic_misplaced(self.goal)
+        self.heuristic = self.heuristic_manhattan(goal)
         self.evaluation = self.cost + self.heuristic
         self.possible_actions = self.find_possible_actions()
+        self.finished = (self.state == goal)
 
     def __str__(self):
         string = """id(parent) = {}
@@ -28,12 +25,13 @@ moved_tile = {}
 cost = {}
 heuristic = {}
 evaluation = {}
-possible_actions = {}\n""".format(id(self.parent), self.moved_tile,
-                                  self.cost, self.heuristic, self.evaluation, self.possible_actions)
+possible_actions = {}
+finished = {}\n""".format(id(self.parent), self.moved_tile,
+                          self.cost, self.heuristic, self.evaluation, self.possible_actions, self.finished)
         string += "state =\n{}".format(utils.puzzle_formatted_str(self.state))
         return string
 
-    def find_possible_actions(self):
+    def find_possible_actions(self) -> list:
         possible_actions = []
         zero_index = None
         size = int(math.sqrt(len(self.state)))
@@ -62,17 +60,23 @@ possible_actions = {}\n""".format(id(self.parent), self.moved_tile,
                 misplaced_tiles += 1
         return misplaced_tiles
 
+    def heuristic_manhattan(self, goal):
+        manhattan_distance = 0
+        size = int(math.sqrt(len(self.state)))
+        for index, item in enumerate(self.state):
+            item_x = index % size
+            item_y = index // size
+            goal_index = goal.index(item)
+            goal_x = goal_index % size
+            goal_y = goal_index // size
+            manhattan_distance += abs(item_x - goal_x) + abs(item_y - goal_y)
+        return manhattan_distance
+
 
 if __name__ == "__main__":
-    initial_node = Node(None, None, [1, 0, 2, 3, 4, 5, 6, 7, 8], utils.create_goal(3))
+    initial_node = Node(None, None, [1, 0, 2, 3, 4, 5, 6, 7, 8])
     print(initial_node.__str__())
     print("goal =\n{}".format(utils.puzzle_formatted_str(utils.create_goal(3))))
-    second_node = Node(initial_node, 2, None, None)
+    second_node = Node(initial_node, 2, None)
     print(second_node.__str__())
     print("goal =\n{}".format(utils.puzzle_formatted_str(utils.create_goal(3))))
-
-
-
-Algo
-List+noeuds_crees --> ordonnera en fonction evaluation
-
