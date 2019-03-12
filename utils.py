@@ -179,6 +179,11 @@ def puzzle_formatted_str(puzzle) -> None:
 
 
 def puzzle_has_snail_solution(puzzle):
+    """
+    Check if a snail solution is possible.
+    :param list puzzle: n_puzzle state
+    :return: boolean
+    """
     n = 0
     for index, tile in enumerate(puzzle[:-1]):
         for sub_index, following_tile in enumerate(puzzle[index + 1:]):

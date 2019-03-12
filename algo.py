@@ -5,7 +5,12 @@ import utils
 goal = utils.create_goal(3)
 
 
-def a_star(initial_node):
+def a_star(initial_node) -> None:
+    """
+    A* algorithm to find an optimal solution to problem node.
+    :param initial_node: Problem node with initial conditions.
+    :return: None
+    """
     created_nodes = 1
     nodes_queue = [initial_node]
     explored_states = [initial_node.state]
@@ -30,7 +35,13 @@ def a_star(initial_node):
                                                                                    len(nodes_queue)))
 
 
-def finished(finish_node, created_nodes):
+def finished(finish_node, created_nodes) -> None:
+    """
+    Function that print solution when found.
+    :param finish_node: Solution leaf
+    :param created_nodes: number of nodes that have been created
+    :return: None
+    """
     print(finish_node.__str__())
     i = 0
     while finish_node.parent:
