@@ -33,6 +33,11 @@ finished = {}\n""".format(id(self.parent), self.moved_tile,
         return string
 
     def find_possible_actions(self) -> list:
+        """
+        For the state of the node, give the list of the tiles that are possible to swap. Doesn't count the tile that
+        has just been moved to arrive to the node.
+        :return list: list of int corresponding to the tiles that can be moved.
+        """
         possible_actions = []
         zero_index = None
         size = int(math.sqrt(len(self.state)))
@@ -54,14 +59,25 @@ finished = {}\n""".format(id(self.parent), self.moved_tile,
             possible_actions.remove(self.moved_tile)
         return possible_actions
 
-    def heuristic_misplaced(self, goal):
+    def heuristic_misplaced(self, goal) -> int:
+        """
+        Simple consistent heuristic that counts the number of misplaced tiles.
+        :param list goal:
+        :return int misplaced tiles: Nb of misplaced tiles
+        """
         misplaced_tiles = 0
         for index, item in enumerate(self.state):
             if item != 0 and item != goal[index]:
                 misplaced_tiles += 1
         return misplaced_tiles
 
-    def heuristic_manhattan(self, goal):
+    def heuristic_manhattan(self, goal) -> int:
+        """
+        Manhattan distance is another consistent heuristic. Count the number move that any tile (but the 0 one) needs
+        to get to goal_position, and sums it for all the tiles.
+        :param list goal:
+        :return int manhattan_distance:
+        """
         manhattan_distance = 0
         size = int(math.sqrt(len(self.state)))
         for index, item in enumerate(self.state):

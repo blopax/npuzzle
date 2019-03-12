@@ -2,10 +2,7 @@ import math
 import copy
 
 
-# size
-
-
-def fill_right(n, sorted_list, x, y, i):
+def fill_right(n, sorted_list, x, y, i) -> (list, int, int, int):
     """
     Fill the number from left to right until it reaches the border or an already filled slot, update i, x, y values"
     :param int n: size of puzzle
@@ -27,7 +24,7 @@ def fill_right(n, sorted_list, x, y, i):
     return sorted_list, x, y, i
 
 
-def fill_down(n, sorted_list, x, y, i):
+def fill_down(n, sorted_list, x, y, i) -> (list, int, int, int):
     """
     Fill the number from up to down until it reaches the border or an already filled slot, update i, x, y values"
     :param int n: size of puzzle
@@ -49,7 +46,7 @@ def fill_down(n, sorted_list, x, y, i):
     return sorted_list, x, y, i
 
 
-def fill_left(n, sorted_list, x, y, i):
+def fill_left(n, sorted_list, x, y, i) -> (list, int, int, int):
     """
     Fill the number from right to left until it reaches the border or an already filled slot, update i, x, y values"
     :param int n: size of puzzle
@@ -70,7 +67,7 @@ def fill_left(n, sorted_list, x, y, i):
     return sorted_list, x, y, i
 
 
-def fill_up(n, sorted_list, x, y, i):
+def fill_up(n, sorted_list, x, y, i) -> (list, int, int, int):
     """
     Fill the number from down to up until it reaches the border or an already filled slot, update i, x, y values"
     :param int n: size of puzzle
@@ -149,14 +146,12 @@ def action(puzzle, tile) -> list:
     except Exception("No swap possible") as e:
         print(e)
 
-    # should probably create class Tile with value, index, x, y
 
-
-def puzzle_formatted_str(puzzle) -> None:
+def puzzle_formatted_str(puzzle) -> str:
     """
-
-    :param list puzzle:
-    :return: void function
+    Transforms list puzzle to a formatted string that can be printed with nice padding.
+    :param list puzzle: Puzzle as a list
+    :return str string: Puzzle as a formatted string
     """
     length = len(puzzle)
     size = int(math.sqrt(length))
@@ -178,7 +173,7 @@ def puzzle_formatted_str(puzzle) -> None:
     return string
 
 
-def puzzle_has_snail_solution(puzzle):
+def puzzle_has_snail_solution(puzzle) -> bool:
     """
     Check if a snail solution is possible.
     :param list puzzle: n_puzzle state
@@ -203,23 +198,6 @@ if __name__ == "__main__":
     P = [5, 2, 3, 8, 4, 7, 1, 6, 0]
     puzzle_has_snail_solution(P)
     print(puzzle_formatted_str(P))
-    # Q = action(P, 1)
-    # print(puzzle_formatted_str(Q))
-    # print_puzzle_puzzle(Q)
-    # Q = action(P, 2)
-    # print_puzzle(Q)
-    # Q = action(P, 3)
-    # print_puzzle(Q)
-    # Q = action(P, 4)
-    # print_puzzle(Q)
-    # Q = action(P, 5)
-    # print_puzzle(Q)
-    # Q = action(P, 6)
-    # print_puzzle(Q)
-    # Q = action(P, 7)
-    # print_puzzle(Q)
-    # Q = action(P, 8)
-    # print_puzzle(Q)
 
     # P = create_goal(3)
     # puzzle_formatted_str(P)
