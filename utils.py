@@ -121,6 +121,8 @@ def action(puzzle, tile) -> list:
     """
 
     try:
+        if tile not in puzzle:
+            raise Exception("No swap possible")
         index_zero, index_tile = 0, 0
         for index, item in enumerate(puzzle):
             if item == 0:
