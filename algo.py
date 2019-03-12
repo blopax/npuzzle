@@ -12,7 +12,7 @@ def a_star(initial_node) -> None:
     :param Node initial_node: Problem node with initial conditions.
     :return: None
     """
-    if size > 2 and utils.puzzle_has_snail_solution(initial_node.state) is False:
+    if size % 2 == 1 and utils.puzzle_has_snail_solution(initial_node.state) is False:
         return finished(None, 0, 0)
     time_complexity = 1
     space_complexity = 1

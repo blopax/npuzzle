@@ -177,13 +177,13 @@ def puzzle_formatted_str(puzzle) -> str:
 
 def puzzle_has_snail_solution(puzzle) -> bool:
     """
-    Check if a snail solution is possible. Is useful only for size > 2.
+    Check if a snail solution is possible. Is useful only for uneven size.
     :param list puzzle: n_puzzle state
     :return: boolean
     """
     try:
-        if len(puzzle) <= 4:
-            raise Exception("Don't use this function for size < 2")
+        if len(puzzle) % 2 == 0:
+            raise Exception("Don't use this function for even size.")
         n = 0
         for index, tile in enumerate(puzzle[:-1]):
             for sub_index, following_tile in enumerate(puzzle[index + 1:]):
@@ -192,7 +192,7 @@ def puzzle_has_snail_solution(puzzle) -> bool:
                     n += 1
         print(n)
         return n % 2 == 1
-    except Exception("Don't use thi function for size < 2") as e:
+    except Exception("Don't use this function for even size.") as e:
         print(e)
 
 
