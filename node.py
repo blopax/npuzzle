@@ -15,6 +15,7 @@ class Node:
             self.state = utils.action(parent.state, moved_tile)
         else:
             self.state = state
+        # self.heuristic = self.improved_heuristic_manhattan(algo.goal)
         self.heuristic = self.heuristic_manhattan(algo.goal)
         self.evaluation = self.cost + self.heuristic
         self.possible_actions = self.find_possible_actions()
@@ -81,19 +82,63 @@ finished = {}\n""".format(id(self.parent), self.moved_tile,
         manhattan_distance = 0
         size = int(math.sqrt(len(self.state)))
         for index, item in enumerate(self.state):
-            item_x = index % size
-            item_y = index // size
-            goal_index = goal.index(item)
-            goal_x = goal_index % size
-            goal_y = goal_index // size
-            manhattan_distance += abs(item_x - goal_x) + abs(item_y - goal_y)
+            if item != 0:
+                item_x = index % size
+                item_y = index // size
+                goal_index = goal.index(item)
+                goal_x = goal_index % size
+                goal_y = goal_index // size
+                manhattan_distance += abs(item_x - goal_x) + abs(item_y - goal_y)
         return manhattan_distance
+
+    def improved_heuristic_manhattan(self, goal) -> int:
+        """
+        Improve heuristic manhattan by adding 2 each time 2 tiles are on their final line or column but in the inverse
+        position they should be. (In this case one of the tile has to move to let the other pass and then come back
+        to the correct line/column. This heuristic is also consistent.
+        :param list goal: goal_state
+        :return int distance: heuristic
+        """
+        distance = self.heuristic_manhattan(goal)
+        for index in range(algo.size):
+            line = self.state[index * algo.size: (index + 1) * algo.size]
+            goal_line = goal[index * algo.size: (index + 1) * algo.size]
+            column = [self.state[i] for i in [index + j * algo.size for j in range(algo.size)]]
+            goal_column = [goal[i] for i in [index + j * algo.size for j in range(algo.size)]]
+            distance += 2 * (self.inversed_tiles(line, goal_line) + self.inversed_tiles(column, goal_column))
+        return distance
+
+    @staticmethod
+    def inversed_tiles(line, goal_line) -> int:
+        """
+        On a given line (or column) count the number of tiles that are on their goal_line (or goal_column) but that
+        will need to move from this line (column).
+        :param list line:
+        :param list goal_line:
+        :return int inversed_tiles:
+        """
+        inversed_tiles = 0
+        items_on_correct_line = set(line) & set(goal_line) - {0}
+        if len(items_on_correct_line) < 2:
+            return inversed_tiles
+        correct_line_items_index = []
+        for item in line:
+            if item in items_on_correct_line:
+                correct_line_items_index.append(goal_line.index(item))
+        for index, item in enumerate(correct_line_items_index[:-1]):
+            if item > correct_line_items_index[index + 1]:
+                inversed_tiles += 1
+        return inversed_tiles
 
 
 if __name__ == "__main__":
     initial_node = Node(None, None, [1, 0, 2, 3, 4, 5, 6, 7, 8])
-    print(initial_node.__str__())
-    print("goal =\n{}".format(utils.puzzle_formatted_str(utils.create_goal(3))))
-    second_node = Node(initial_node, 2, None)
-    print(second_node.__str__())
-    print("goal =\n{}".format(utils.puzzle_formatted_str(utils.create_goal(3))))
+    print(initial_node.heuristic)
+    initial_node = Node(None, None, [1, 6, 0, 3, 4, 8, 5, 2, 7])
+    print(initial_node.heuristic)
+
+    # print(initial_node.__str__())
+    # print("goal =\n{}".format(utils.puzzle_formatted_str(utils.create_goal(3))))
+    # second_node = Node(initial_node, 2, None)
+    # print(second_node.__str__())
+    # print("goal =\n{}".format(utils.puzzle_formatted_str(utils.create_goal(3))))
