@@ -152,11 +152,9 @@ class TestNPuzzle(unittest.TestCase):
             utils.action(puzzle, action)
 
     def test_puzzle_has_snail_solution(self):
-        puzzle = [0, 1, 2, 3]
-        self.assertEqual(utils.puzzle_has_snail_solution(puzzle), False)
-
-        puzzle = [0, 1, 3, 2]
-        self.assertEqual(utils.puzzle_has_snail_solution(puzzle), True)
+        with self.assertRaises(Exception):
+            puzzle = [0, 1, 2, 3]
+            utils.puzzle_has_snail_solution(puzzle)
 
         puzzle = [0, 1, 2, 3, 5, 4, 7, 6, 8]
         self.assertEqual(utils.puzzle_has_snail_solution(puzzle), False)

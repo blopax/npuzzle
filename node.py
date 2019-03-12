@@ -15,8 +15,8 @@ class Node:
             self.state = utils.action(parent.state, moved_tile)
         else:
             self.state = state
-        # self.heuristic = self.improved_heuristic_manhattan(algo.goal)
-        self.heuristic = self.heuristic_manhattan(algo.goal)
+        self.heuristic = self.improved_heuristic_manhattan(algo.goal)
+        # self.heuristic = self.heuristic_manhattan(algo.goal)
         self.evaluation = self.cost + self.heuristic
         self.possible_actions = self.find_possible_actions()
         self.finished = (self.state == algo.goal)

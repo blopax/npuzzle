@@ -12,6 +12,8 @@ def a_star(initial_node) -> None:
     :param Node initial_node: Problem node with initial conditions.
     :return: None
     """
+    if size > 2 and utils.puzzle_has_snail_solution(initial_node.state) is False:
+        return finished(None, 0, 0)
     time_complexity = 1
     space_complexity = 1
     nodes_queue = [initial_node]
@@ -32,8 +34,7 @@ def a_star(initial_node) -> None:
                 if new_node.finished is True:
                     return finished(new_node, time_complexity, space_complexity)
         nodes_queue.remove(best_node)
-    print("no Solutions, time complexity: {} nodes created, space complexity: {} states explored, "
-          "{} in queue".format(time_complexity, space_complexity, len(nodes_queue)))
+    return finished(None, 0, 0)
 
 
 def finished(finish_node, time_complexity, space_complexity) -> None:
@@ -44,18 +45,28 @@ def finished(finish_node, time_complexity, space_complexity) -> None:
     :param int space_complexity: max concurential nodes in memory.
     :return: None
     """
-    print(finish_node.__str__())
-    i = 0
-    while finish_node.parent:
-        finish_node = finish_node.parent
-        print(finish_node.__str__())
-        i += 1
-    print("{} steps and {} time_complexity and {} space_complexity".format(i, time_complexity, space_complexity))
+    if finish_node is None:
+        print("This problem has no solution.")
+    else:
+        solution_list = [finish_node]
+        while finish_node.parent:
+            finish_node = finish_node.parent
+            solution_list.insert(0, finish_node)
+
+        print("""
+        This problem can be solved in {} steps.
+        The time_complexity is {} and space_complexity is {}
+        The steps to solve it are the following {}""".format(
+            len(solution_list) - 1, time_complexity, space_complexity, [item.moved_tile for item in solution_list[1:]]))
+
+        for item in solution_list:
+            print(utils.puzzle_formatted_str(item.state))
 
 
 if __name__ == "__main__":
     init_state = [5, 2, 3, 8, 4, 7, 1, 6, 0]
     # init_state = [1, 3, 2, 0]
+    # init_state = [1, 2, 0, 3]
     print(utils.puzzle_formatted_str(init_state))
     init_node = node.Node(None, None, init_state)
     # initial_node = node.Node(None, None, utils.create_goal(3), utils.create_goal(3))
