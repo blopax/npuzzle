@@ -17,27 +17,28 @@ def search_algo(initial_node, mode, verbose=False) -> None:
     if size % 2 == 1 and utils.puzzle_has_snail_solution(initial_node.state) is False:
         return finished(None, 0, 0, verbose=verbose)
     time_complexity, space_complexity = 1, 1
-    nodes_queue, explored_states = [initial_node], [initial_node.state]
+    nodes_queue = [initial_node]
+    explored_states = {(tuple(initial_node.state),)}
     if initial_node.finished is True:
         return finished(initial_node, time_complexity, space_complexity, verbose=verbose)
+    if mode not in ['a_star', 'greedy', 'uniform_cost']:
+        return finished(None, 0, 0, error=True)
     while nodes_queue:
-        sorted_queue = sort_queue(nodes_queue, mode)
-        if not sorted_queue:
-            return finished(None, 0, 0, error=True)
-        best_node = sorted_queue[0]
+        best_node = nodes_queue[0]
         for action in best_node.possible_actions:
             state = utils.action(best_node.state, action)
-            if state not in explored_states:
+            if tuple(state) not in explored_states:
                 new_node = node.Node(best_node, action, state)
                 time_complexity += 1
                 nodes_queue.append(new_node)
-                explored_states.append(new_node.state)
+                explored_states.add(tuple(new_node.state))
                 space_complexity = max(space_complexity, len(explored_states))
                 if verbose:
-                    verbose_print(time_complexity, space_complexity, sorted_queue, new_node)
+                    verbose_print(time_complexity, space_complexity, nodes_queue, new_node)
                 if new_node.finished is True:
                     return finished(new_node, time_complexity, space_complexity, verbose=verbose)
         nodes_queue.remove(best_node)
+        nodes_queue = sort_queue(nodes_queue, mode)
     return finished(None, 0, 0, verbose=verbose)
 
 
