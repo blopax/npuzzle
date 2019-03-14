@@ -9,8 +9,8 @@ def get_args():
     parser.add_argument("-he", "--heuristic", type=str, default="manhattan",
                         choices=["manhattan", "misplaced", "distance"],
                         help="Choose the heuristic to be used")
-    parser.add_argument("-a", "--algorithm", type=str, default="astar",
-                        choices=["astar", "idastar", "greedy","uniform-cost"],
+    parser.add_argument("-a", "--algorithm", type=str, default="a-star",
+                        choices=["a-star", "ida-star", "greedy","uniform-cost"],
                         help="Choose the algorithm to be used")
     parser.add_argument("-v", "--verbosity", type=int, default=0, choices=[0, 1, 2, 3],
                         help="Verbose mode")
@@ -25,8 +25,7 @@ def get_args():
 
 if __name__ == "__main__":
     args = get_args()
-    print("bob")
-    print(args.heuristic)
+    error = ''
     if args.file is not False:
-        print(args.file)
-        parser.check_file(args.file)
+        error = parser.check_file(error, args.file)
+        print(error)
