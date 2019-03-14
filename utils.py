@@ -187,15 +187,12 @@ def puzzle_has_snail_solution(puzzle) -> bool:
         for index, tile in enumerate(puzzle[:-1]):
             for sub_index, following_tile in enumerate(puzzle[index + 1:]):
                 if tile > following_tile > 0:
-                    print(tile, following_tile)
                     n += 1
-        print(n)
 
         size = int(math.sqrt(len(puzzle)))
         if size % 2 == 0:
             zero_index = puzzle.index(0)
             zero_row = zero_index / size
-            print(zero_row)
             return (n + zero_row) % 2 == goal_parity
         else:
             return n % 2 == goal_parity
