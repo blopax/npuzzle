@@ -177,13 +177,12 @@ def puzzle_formatted_str(puzzle) -> str:
 
 def puzzle_has_snail_solution(puzzle) -> bool:
     """
-    Check if a snail solution is possible. Is useful only for uneven size.
+    Check if snail has no solution.
     :param list puzzle: n_puzzle state
     :return: boolean
     """
     try:
-        if len(puzzle) % 2 == 0:
-            raise Exception("Don't use this function for even size.")
+        goal_parity = 1
         n = 0
         for index, tile in enumerate(puzzle[:-1]):
             for sub_index, following_tile in enumerate(puzzle[index + 1:]):
@@ -191,9 +190,18 @@ def puzzle_has_snail_solution(puzzle) -> bool:
                     print(tile, following_tile)
                     n += 1
         print(n)
-        return n % 2 == 1
+
+        size = int(math.sqrt(len(puzzle)))
+        if size % 2 == 0:
+            zero_index = puzzle.index(0)
+            zero_row = zero_index / size
+            print(zero_row)
+            return (n + zero_row) % 2 == goal_parity
+        else:
+            return n % 2 == goal_parity
     except Exception("Don't use this function for even size.") as e:
         print(e)
+    # possibility to change the goal by saying goal_parity = 0 or 1 if snail or normal
 
 
 if __name__ == "__main__":

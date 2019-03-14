@@ -14,7 +14,7 @@ def search_algo(initial_node, mode, verbose=False) -> None:
     :param bool verbose: verbose mode will print more information during search
     :return: None
     """
-    if size % 2 == 1 and utils.puzzle_has_snail_solution(initial_node.state) is False:
+    if utils.puzzle_has_snail_solution(initial_node.state) is False:
         return finished(None, 0, 0, verbose=verbose)
     time_complexity, space_complexity = 1, 1
     nodes_queue = [initial_node]
