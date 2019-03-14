@@ -1,5 +1,6 @@
 import node
 import utils
+import visu
 
 
 size = 3
@@ -104,6 +105,7 @@ def finished(finish_node, time_complexity, space_complexity, error=False, verbos
         if verbose:
             for item in solution_list:
                 print(utils.puzzle_formatted_str(item.state))
+        visu.visualization(solution_list, size)
 
 
 if __name__ == "__main__":
@@ -120,6 +122,6 @@ if __name__ == "__main__":
     init_node = node.Node(None, None, init_state)
     # initial_node = node.Node(None, None, utils.create_goal(3), utils.create_goal(3))
     # print(initial_node.__str__())
-    # search_algo(init_node, mode="a_star")
-    search_algo(init_node, mode="a_star")
+    # search_algo(init_node, mode="a_star", verbose=True)
+    search_algo(init_node, mode="greedy", verbose=True)
     # search_algo(init_node, mode="uniform_cost")

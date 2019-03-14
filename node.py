@@ -134,7 +134,7 @@ finished = {}\n""".format(id(self.parent), self.moved_tile,
 if __name__ == "__main__":
     initial_node = Node(None, None, [1, 0, 2, 3, 4, 5, 6, 7, 8])
     print(initial_node.heuristic)
-    initial_node = Node(None, None, [1, 6, 0, 3, 4, 8, 5, 2, 7])
+    initial_node = Node(None, None, [1, 2, 0, 4, 3, 5, 6, 7, 8])
     print(initial_node.heuristic)
 
     # print(initial_node.__str__())
