@@ -21,7 +21,7 @@ def search_algo(initial_node, mode, verbose=False) -> None:
     nodes_queue = [initial_node]
     explored_states = {(tuple(initial_node.state),)}
     if initial_node.finished is True:
-        return finished(initial_node, time_complexity, space_complexity, verbose=verbose)
+        return finished(initial_node, time_complexity, space_complexity, verbose=verbose, mode=mode)
     if mode not in ['a_star', 'greedy', 'uniform_cost']:
         return finished(None, 0, 0, error=True)
     while nodes_queue:
@@ -37,7 +37,7 @@ def search_algo(initial_node, mode, verbose=False) -> None:
                 if verbose:
                     verbose_print(time_complexity, space_complexity, nodes_queue, new_node)
                 if new_node.finished is True:
-                    return finished(new_node, time_complexity, space_complexity, verbose=verbose)
+                    return finished(new_node, time_complexity, space_complexity, verbose=verbose, mode=mode)
         nodes_queue.remove(best_node)
         nodes_queue = sort_queue(nodes_queue, mode)
     return finished(None, 0, 0, verbose=verbose)
@@ -75,7 +75,7 @@ def verbose_print(time_complexity, space_complexity, sorted_queue, new_node) -> 
         print(utils.puzzle_formatted_str(new_node.state))
 
 
-def finished(finish_node, time_complexity, space_complexity, error=False, verbose=False) -> None:
+def finished(finish_node, time_complexity, space_complexity, error=False, verbose=False, mode=None) -> None:
     """
     Function that print solution when found.
     :param Node finish_node: Solution leaf.
@@ -83,6 +83,7 @@ def finished(finish_node, time_complexity, space_complexity, error=False, verbos
     :param int space_complexity: max concurential nodes in memory.
     :param bool error: if there is an error in the parameters given to search algo.
     :param bool verbose: verbose mode will print more information during search
+    :param str mode: search algorithm mode
     :return: None
     """
     if error is True:
@@ -105,7 +106,8 @@ def finished(finish_node, time_complexity, space_complexity, error=False, verbos
         if verbose:
             for item in solution_list:
                 print(utils.puzzle_formatted_str(item.state))
-        visu.visualization(solution_list, size)
+
+        visu.visualization(solution_list, size, [len(solution_list) - 1, time_complexity, space_complexity, mode])
 
 
 if __name__ == "__main__":
