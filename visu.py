@@ -70,3 +70,11 @@ def write_info(window, step, solution_info):
             top_adjustment = 50
         text_rect.topleft = (board_width + 20, top_adjustment + index * 30)
         window.blit(text_surf, text_rect)
+    if step == solution_info[0]:
+        message = "Puzzle solved!!!"
+        text_surf = basic_font.render(message, False, (123, 0, 0), (0, 0, 0))
+        text_rect = text_surf.get_rect()
+        text_rect.topleft = (board_width + 20, 300)
+        window.blit(text_surf, text_rect)
+    else:
+        pygame.draw.rect(window, (0, 0, 0), (board_width, 300, width - board_width, 100))

@@ -125,5 +125,5 @@ if __name__ == "__main__":
     # initial_node = node.Node(None, None, utils.create_goal(3), utils.create_goal(3))
     # print(initial_node.__str__())
     # search_algo(init_node, mode="a_star", verbose=True)
-    search_algo(init_node, mode="greedy", verbose=True)
+    search_algo(init_node, mode="a_star", verbose=True)
     # search_algo(init_node, mode="uniform_cost")
