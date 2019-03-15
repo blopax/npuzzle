@@ -1,4 +1,5 @@
 import pygame
+import os
 
 
 width = 1400
@@ -7,7 +8,7 @@ board_width = height * 3 // 5
 
 
 def visualization(info, visu_mode):
-    info['tile_size'] = board_width // info['board_size']
+    info['tile_size'], info['sound'] = board_width // info['board_size'], None
     info['cpu_step'], info['player_step'] = 0, 0
     info['player_state'], info['cpu_state'] = info['initial_state'], info['initial_state']
     show_visu = True
@@ -19,36 +20,51 @@ def visualization(info, visu_mode):
     else:
         window = pygame.display.set_mode((width // 2, height))
         pygame.display.set_caption("N_puzzle: learn from the master")
-    pygame.mixer.music.load('Builder_Game_Weapon_Whip_1.mp3')
+    info = music_update(info)
     while show_visu:
         for event in pygame.event.get():
             if event.type == pygame.QUIT or event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 show_visu = False
             if event.type == pygame.KEYDOWN:
                 info = update_info(info, event.key, visu_mode)
-
+                info = music_update(info, event.key)
         if visu_mode == 'fight':
             solution_visualization(window, board_width + 230, info)
             player_visualization(window, 20, info)
         else:
             solution_visualization(window, 20, info)
-
         pygame.display.flip()
 
 
+def music_update(info, key=None):
+    if key is None:
+        if os.path.exists('music.mp3'):
+            pygame.mixer.music.load('music.mp3')
+            pygame.mixer.music.play()
+        if os.path.exists('sound.wav'):
+            info['sound'] = pygame.mixer.Sound('sound.wav')
+    if key == pygame.K_m and os.path.exists('music.mp3'):
+        pygame.mixer.music.stop()
+
+    return info
+
+
 def update_info(info, key, visu_mode):
+    play_sound = False
     if visu_mode == 'fight' and key in [pygame.K_RIGHT, pygame.K_LEFT, pygame.K_DOWN, pygame.K_UP]:
         info = move(info, key)
         info['cpu_state'] = info['solution_list'][info['cpu_step']].state
-        pygame.mixer.music.play()
+        play_sound = True
     if visu_mode != 'fight' and key == pygame.K_RIGHT and info['cpu_step'] < info['search_algo_best_solution']:
         info['cpu_step'] += 1
         info['cpu_state'] = info['solution_list'][info['cpu_step']].state
-        pygame.mixer.music.play()
+        play_sound = True
     if visu_mode != 'fight' and key == pygame.K_LEFT and info['cpu_step'] > 0:
         info['cpu_step'] -= 1
         info['cpu_state'] = info['solution_list'][info['cpu_step']].state
-        pygame.mixer.music.play()
+        play_sound = True
+    if play_sound is True and 'sound' in info.keys():
+        info['sound'].play()
     return info
 
 
