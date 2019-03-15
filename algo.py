@@ -107,7 +107,9 @@ def finished(finish_node, time_complexity, space_complexity, error=False, verbos
             for item in solution_list:
                 print(utils.puzzle_formatted_str(item.state))
 
-        visu.visualization(solution_list, size, [len(solution_list) - 1, time_complexity, space_complexity, mode])
+        info = utils.make_info(size, solution_list, mode, time_complexity, space_complexity)
+        visu.visualization(info, 'fight')
+        # if not fight show just solution
 
 
 if __name__ == "__main__":

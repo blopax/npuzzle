@@ -198,6 +198,20 @@ def puzzle_has_snail_solution(puzzle) -> bool:
     # possibility to change the goal by saying goal_parity = 0 or 1 if snail or normal
 
 
+def make_info(board_size, solution_list, search_algorithm, time_complexity, space_complexity):
+    info = {
+        'board_size': board_size,
+        'solution_list': solution_list,
+        'search_algo': search_algorithm,
+        'search_algo_best_solution': len(solution_list) - 1,
+        'time_complexity': time_complexity,
+        'space_complexity': space_complexity,
+        'initial_state': solution_list[0].state,
+        'goal_state': solution_list[len(solution_list) - 1].state
+    }
+    return info
+
+
 if __name__ == "__main__":
     P = [0, 1, 2, 3, 4, 5, 6, 7, 8]
     puzzle_has_snail_solution(P)
