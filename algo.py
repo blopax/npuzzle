@@ -2,7 +2,6 @@ import node
 import utils
 import visu
 
-
 size = 3
 goal = utils.create_goal(size)
 
@@ -41,6 +40,38 @@ def search_algo(initial_node, mode, verbose=False) -> None:
         nodes_queue.remove(best_node)
         nodes_queue = sort_queue(nodes_queue, mode)
     return finished(None, 0, 0, verbose=verbose)
+
+
+def search_ida_star(initial_node, limit=None, time_complexity=1, space_complexity=1, verbose=False) -> None:
+    if utils.puzzle_has_snail_solution(initial_node.state) is False:
+        return finished(None, 0, 0, verbose=verbose)
+    nodes_queue = [initial_node]
+    explored_states = {(tuple(initial_node.state),)}
+    if limit is None:
+        limit = initial_node.evaluation
+    new_limit = None
+    if initial_node.finished is True:
+        return finished(initial_node, time_complexity, space_complexity, verbose=verbose, mode=mode)
+    while nodes_queue:
+        best_node = nodes_queue[0]
+        for action in best_node.possible_actions:
+            time_complexity += 1
+            new_node = node.Node(best_node, action)
+            if new_node.evaluation <= limit:
+                nodes_queue.insert(0, new_node)
+                explored_states.add(tuple(new_node.state))
+                space_complexity = max(space_complexity, len(explored_states))
+                if verbose:
+                    verbose_print(time_complexity, space_complexity, nodes_queue, new_node)
+                if new_node.finished is True:
+                    return finished(new_node, time_complexity, space_complexity, verbose=verbose, mode='ida_star')
+            else:
+                new_limit = new_node.evaluation if new_limit is None else min(new_limit, new_node.evaluation)
+        nodes_queue.remove(best_node)
+    if new_limit is not None:
+        search_ida_star(initial_node, new_limit, time_complexity, space_complexity)
+    else:
+        return finished(None, 0, 0, verbose=verbose)
 
 
 def sort_queue(queue, mode) -> list:
@@ -113,13 +144,13 @@ def finished(finish_node, time_complexity, space_complexity, error=False, verbos
 
 
 if __name__ == "__main__":
-    # init_state = [5, 2, 3, 8, 4, 7, 1, 6, 0]
+    init_state = [1, 2, 8, 3, 4, 7, 5, 6, 0]
     # size = 5
     init_state = [i for i in range(size ** 2)]
     tmp = init_state[size]
     init_state[size] = init_state[size + 1]
     init_state[size + 1] = tmp
-    # init_state = [4, 6, 5, 0, 2, 1, 7, 8, 3] # 25 etapes?
+    init_state = [4, 6, 5, 0, 2, 1, 7, 8, 3] # 25 etapes?
     # init_state = [1, 3, 2, 0]
     # init_state = [1, 2, 0, 3]
     print(utils.puzzle_formatted_str(init_state))
@@ -128,4 +159,5 @@ if __name__ == "__main__":
     # print(initial_node.__str__())
     # search_algo(init_node, mode="a_star", verbose=True)
     search_algo(init_node, mode="a_star", verbose=True)
+    search_ida_star(init_node)
     # search_algo(init_node, mode="uniform_cost")
