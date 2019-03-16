@@ -6,23 +6,38 @@ size = 3
 goal = utils.create_goal(size)
 
 
+def algo(initial_node, mode, verbose=False) -> None:
+    """
+    Algorithm pre-treatment to check if initial state has a solution and redirect to the relevant function
+    depending on the mode.
+    :param Node initial_node: Problem node with initial conditions.
+    :param str mode: Mode of algorithm. Has to be in ["a_star", "greedy", "uniform_cost", "ida_star"]
+    :param bool verbose: verbose mode will print more information during search
+    :return: None
+    """
+    if mode not in ['a_star', 'greedy', 'uniform_cost', 'ida_star']:
+        return finished(None, 0, 0, error=True)
+    if utils.puzzle_has_snail_solution(initial_node.state) is False:
+        return finished(None, 0, 0, verbose=verbose)
+    if initial_node.finished is True:
+        return finished(initial_node, time_complexity, space_complexity, verbose=verbose, mode=mode)
+    if mode == 'ida_star':
+        return search_ida_star(initial_node, verbose=verbose)
+    else:
+        return search_algo(initial_node, mode, verbose=verbose)
+
+
 def search_algo(initial_node, mode, verbose=False) -> None:
     """
-    A* algorithm to find an optimal solution to problem node.
+    Algorithm for A*, greedy search or uniform_cost search to find solution to problem node.
     :param Node initial_node: Problem node with initial conditions.
     :param str mode: Mode of algorithm. Has to be in ["a_star", "greedy", "uniform_cost"]
     :param bool verbose: verbose mode will print more information during search
     :return: None
     """
-    if utils.puzzle_has_snail_solution(initial_node.state) is False:
-        return finished(None, 0, 0, verbose=verbose)
     time_complexity, space_complexity = 1, 1
     nodes_queue = [initial_node]
     explored_states = {(tuple(initial_node.state),)}
-    if initial_node.finished is True:
-        return finished(initial_node, time_complexity, space_complexity, verbose=verbose, mode=mode)
-    if mode not in ['a_star', 'greedy', 'uniform_cost']:
-        return finished(None, 0, 0, error=True)
     while nodes_queue:
         best_node = nodes_queue[0]
         for action in best_node.possible_actions:
@@ -43,15 +58,20 @@ def search_algo(initial_node, mode, verbose=False) -> None:
 
 
 def search_ida_star(initial_node, limit=None, time_complexity=1, space_complexity=1, verbose=False) -> None:
-    if utils.puzzle_has_snail_solution(initial_node.state) is False:
-        return finished(None, 0, 0, verbose=verbose)
+    """
+    IDA* algorithm.
+    :param Node initial_node: Problem node with initial conditions.
+    :param int limit: Depth limit of this iteration of IDA
+    :param int time_complexity: Time complexity when the iteration starts
+    :param int space_complexity: Space complexity when the iteration starts
+    :param bool verbose: verbose mode will print more information during search
+    :return: None
+    """
     nodes_queue = [initial_node]
     explored_states = {(tuple(initial_node.state),)}
     if limit is None:
         limit = initial_node.evaluation
     new_limit = None
-    if initial_node.finished is True:
-        return finished(initial_node, time_complexity, space_complexity, verbose=verbose, mode=mode)
     while nodes_queue:
         best_node = nodes_queue[0]
         for action in best_node.possible_actions:
@@ -118,7 +138,7 @@ def finished(finish_node, time_complexity, space_complexity, error=False, verbos
     :return: None
     """
     if error is True:
-        print("The mode must be in ['a_star', 'greedy', 'uniform_cost']")
+        print("The mode must be in ['a_star', 'greedy', 'uniform_cost', 'ida_star']")
     elif finish_node is None:
         print("This problem has no solution.")
     else:
@@ -158,6 +178,7 @@ if __name__ == "__main__":
     # initial_node = node.Node(None, None, utils.create_goal(3), utils.create_goal(3))
     # print(initial_node.__str__())
     # search_algo(init_node, mode="a_star", verbose=True)
-    search_algo(init_node, mode="a_star", verbose=True)
-    search_ida_star(init_node)
+    algo(init_node, mode="a_star", verbose=False)
+    init_node = node.Node(None, None, init_state)
+    algo(init_node, mode="ida_star", verbose=False)
     # search_algo(init_node, mode="uniform_cost")
