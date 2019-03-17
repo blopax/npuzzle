@@ -88,13 +88,16 @@ def fill_up(n, sorted_list, x, y, i) -> (list, int, int, int):
     return sorted_list, x, y, i
 
 
-def create_goal(n) -> list:
+def create_goal(n, goal_kind='snail') -> list:
     """
     Returns as a list the goal to reach for a n-puzzle of size n in a snail style"
     :param int n: size of puzzle
+    :param str goal_kind: define what is the goal snail or classic
     :return list: list of size n^2 with the solution
     """
 
+    if goal_kind != 'snail':
+        return [i for i in range(n ** 2)]
     sorted_list = [0] * (n ** 2)
     i = 1
     x, y = 0, 0
@@ -175,13 +178,14 @@ def puzzle_formatted_str(puzzle) -> str:
     return string
 
 
-def puzzle_has_snail_solution(puzzle) -> bool:
+def puzzle_has_solution(puzzle, goal_kind='snail') -> bool:
     """
     Check if snail has no solution.
     :param list puzzle: n_puzzle state
+    :param str goal_kind: define what is the goal snail or classic
     :return: boolean
     """
-    goal_parity = 1
+    goal_parity = int(goal_kind == 'snail')
     n = 0
     for index, tile in enumerate(puzzle[:-1]):
         for sub_index, following_tile in enumerate(puzzle[index + 1:]):
@@ -214,13 +218,13 @@ def make_info(board_size, solution_list, search_algorithm, time_complexity, spac
 
 if __name__ == "__main__":
     P = [0, 1, 2, 3, 4, 5, 6, 7, 8]
-    puzzle_has_snail_solution(P)
+    puzzle_has_solution(P)
     P = [1, 2, 3, 4, 0, 5, 6, 7, 8]
-    puzzle_has_snail_solution(P)
+    puzzle_has_solution(P)
     P = [0, 2, 1, 3, 4, 5, 6, 7, 8]
-    puzzle_has_snail_solution(P)
+    puzzle_has_solution(P)
     P = [5, 2, 3, 8, 4, 7, 1, 6, 0]
-    puzzle_has_snail_solution(P)
+    puzzle_has_solution(P)
     print(puzzle_formatted_str(P))
 
     # P = create_goal(3)

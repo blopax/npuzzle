@@ -3,21 +3,23 @@ import utils
 import visu
 
 size = 3
-goal = utils.create_goal(size)
+goal = utils.create_goal(size, 'snail')
+# goal = utils.create_goal(size, 'classic')
 
 
-def algo(initial_node, mode, verbose=False) -> None:
+def algo(initial_node, mode, verbose=False, goal_kind='snail') -> None:
     """
     Algorithm pre-treatment to check if initial state has a solution and redirect to the relevant function
     depending on the mode.
     :param Node initial_node: Problem node with initial conditions.
     :param str mode: Mode of algorithm. Has to be in ["a_star", "greedy", "uniform_cost", "ida_star"]
     :param bool verbose: verbose mode will print more information during search
+    :param str goal_kind: define what is the goal snail or classic
     :return: None
     """
     if mode not in ['a_star', 'greedy', 'uniform_cost', 'ida_star']:
         return finished(None, 0, 0, error=True)
-    if utils.puzzle_has_snail_solution(initial_node.state) is False:
+    if utils.puzzle_has_solution(initial_node.state, goal_kind) is False:
         return finished(None, 0, 0, verbose=verbose)
     if initial_node.finished is True:
         return finished(initial_node, 1, 1, verbose=verbose, mode=mode)
@@ -171,6 +173,7 @@ if __name__ == "__main__":
     init_state[size] = init_state[size + 1]
     init_state[size + 1] = tmp
     init_state = [4, 6, 5, 0, 2, 1, 7, 8, 3] # 25 etapes?
+    # init_state = [6, 4, 5, 0, 2, 1, 7, 8, 3] # classic
     init_state2 = init_state.copy()
     # init_state = [1, 3, 2, 0]
     # init_state = [1, 2, 0, 3]
@@ -180,7 +183,9 @@ if __name__ == "__main__":
     # print(initial_node.__str__())
     # search_algo(init_node, mode="a_star", verbose=True)
     algo(init_node, mode="a_star", verbose=False)
+    # algo(init_node, mode="a_star", verbose=False, goal_kind='classic')
     print(init_state)
     init_node = node.Node(None, None, init_state2)
     algo(init_node, mode="ida_star", verbose=False)
+    # algo(init_node, mode="ida_star", verbose=False, goal_kind='classic')
     # search_algo(init_node, mode="uniform_cost")

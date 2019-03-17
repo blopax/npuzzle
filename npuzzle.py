@@ -9,8 +9,8 @@ def get_args():
     parser.add_argument("-he", "--heuristic", type=str, default="manhattan",
                         choices=["manhattan", "misplaced", "distance"],
                         help="Choose the heuristic to be used")
-    parser.add_argument("-a", "--algorithm", type=str, default="a-star",
-                        choices=["a-star", "ida-star", "greedy","uniform-cost"],
+    parser.add_argument("-a", "--algorithm", type=str, default="a_star",
+                        choices=["a_star", "ida_star", "greedy", "uniform_cost"],
                         help="Choose the algorithm to be used")
     parser.add_argument("-v", "--verbosity", type=int, default=0, choices=[0, 1, 2, 3],
                         help="Verbose mode")
@@ -23,9 +23,14 @@ def get_args():
     
     return parser.parse_args()
 
+
 if __name__ == "__main__":
     args = get_args()
     error = ''
     if args.file is not False:
         error = parser.check_file(error, args.file)
         print(error)
+
+
+# parser add visual fight/solution mode, node, add the heuristic to change accordingly, utils, choose
+# goal_kind accordingly
