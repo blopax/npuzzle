@@ -20,7 +20,7 @@ def algo(initial_node, mode, verbose=False) -> None:
     if utils.puzzle_has_snail_solution(initial_node.state) is False:
         return finished(None, 0, 0, verbose=verbose)
     if initial_node.finished is True:
-        return finished(initial_node, time_complexity, space_complexity, verbose=verbose, mode=mode)
+        return finished(initial_node, 1, 1, verbose=verbose, mode=mode)
     if mode == 'ida_star':
         return search_ida_star(initial_node, verbose=verbose)
     else:
@@ -171,6 +171,7 @@ if __name__ == "__main__":
     init_state[size] = init_state[size + 1]
     init_state[size + 1] = tmp
     init_state = [4, 6, 5, 0, 2, 1, 7, 8, 3] # 25 etapes?
+    init_state2 = init_state.copy()
     # init_state = [1, 3, 2, 0]
     # init_state = [1, 2, 0, 3]
     print(utils.puzzle_formatted_str(init_state))
@@ -179,6 +180,7 @@ if __name__ == "__main__":
     # print(initial_node.__str__())
     # search_algo(init_node, mode="a_star", verbose=True)
     algo(init_node, mode="a_star", verbose=False)
-    init_node = node.Node(None, None, init_state)
+    print(init_state)
+    init_node = node.Node(None, None, init_state2)
     algo(init_node, mode="ida_star", verbose=False)
     # search_algo(init_node, mode="uniform_cost")
