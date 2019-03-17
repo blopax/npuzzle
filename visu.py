@@ -7,28 +7,49 @@ height = 960
 board_width = height * 3 // 5
 
 
-def visualization(info, visu_mode):
-    info['tile_size'], info['sound'] = board_width // info['board_size'], None
-    info['cpu_step'], info['player_step'] = 0, 0
-    info['player_state'], info['cpu_state'] = info['initial_state'], info['initial_state']
-    show_visu = True
+def visualization(info, solution_list) -> None:
+    """
+    Check if visualization should be shown. If so prepares the info dictionary that will be used.
+    :param dict info:
+    :param list solution_list:
+    :return None:
+    """
+    if info['show_visu'] is False:
+        return None
+    else:
+        info['solution_list'] = solution_list
+        info['search_algo_best_solution'] = len(solution_list) - 1
+        info['initial_state'] = solution_list[0].state
+        info['goal_state'] = solution_list[len(solution_list) - 1].state
+        info['tile_size'] = board_width // info['board_size']
+        info['sound'] = None
+        info['cpu_step'], info['player_step'] = 0, 0
+        info['cpu_state'], info['player_state'] = info['initial_state'], info['initial_state']
+        return show_visualization(info)
 
+
+def show_visualization(info) -> None:
+    """
+    Runs visualization.
+    :param dict info:
+    :return None:
+    """
     pygame.init()
-    if visu_mode == 'fight':
+    if info['visu_mode'] == 'fight':
         window = pygame.display.set_mode((width, height))
         pygame.display.set_caption("N_puzzle: battle to death")
     else:
         window = pygame.display.set_mode((width // 2, height))
         pygame.display.set_caption("N_puzzle: learn from the master")
     info = music_update(info)
-    while show_visu:
+    while info['show_visu']:
         for event in pygame.event.get():
             if event.type == pygame.QUIT or event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-                show_visu = False
+                info['show_visu'] = False
             if event.type == pygame.KEYDOWN:
-                info = update_info(info, event.key, visu_mode)
+                info = update_info(info, event.key)
                 info = music_update(info, event.key)
-        if visu_mode == 'fight':
+        if info['visu_mode'] == 'fight':
             solution_visualization(window, board_width + 230, info)
             player_visualization(window, 20, info)
         else:
@@ -36,7 +57,13 @@ def visualization(info, visu_mode):
         pygame.display.flip()
 
 
-def music_update(info, key=None):
+def music_update(info, key=None) -> dict:
+    """
+    Updates music and sounds options
+    :param dict info:
+    :param event.key key: Key pressed by player
+    :return dict info:
+    """
     if key is None:
         if os.path.exists('music.mp3'):
             pygame.mixer.music.load('music.mp3')
@@ -45,21 +72,26 @@ def music_update(info, key=None):
             info['sound'] = pygame.mixer.Sound('sound.wav')
     if key == pygame.K_m and os.path.exists('music.mp3'):
         pygame.mixer.music.stop()
-
     return info
 
 
-def update_info(info, key, visu_mode):
+def update_info(info, key) -> dict:
+    """
+    Updates board info and plays sounds if needed.
+    :param dict info:
+    :param event.key key: Key pressed by player
+    :return dict info:
+    """
     play_sound = False
-    if visu_mode == 'fight' and key in [pygame.K_RIGHT, pygame.K_LEFT, pygame.K_DOWN, pygame.K_UP]:
+    if info['visu_mode'] == 'fight' and key in [pygame.K_RIGHT, pygame.K_LEFT, pygame.K_DOWN, pygame.K_UP]:
         info = move(info, key)
         info['cpu_state'] = info['solution_list'][info['cpu_step']].state
         play_sound = True
-    if visu_mode != 'fight' and key == pygame.K_RIGHT and info['cpu_step'] < info['search_algo_best_solution']:
+    if info['visu_mode'] != 'fight' and key == pygame.K_RIGHT and info['cpu_step'] < info['search_algo_best_solution']:
         info['cpu_step'] += 1
         info['cpu_state'] = info['solution_list'][info['cpu_step']].state
         play_sound = True
-    if visu_mode != 'fight' and key == pygame.K_LEFT and info['cpu_step'] > 0:
+    if info['visu_mode'] != 'fight' and key == pygame.K_LEFT and info['cpu_step'] > 0:
         info['cpu_step'] -= 1
         info['cpu_state'] = info['solution_list'][info['cpu_step']].state
         play_sound = True
@@ -68,14 +100,28 @@ def update_info(info, key, visu_mode):
     return info
 
 
-def player_visualization(window, position, info):
+def player_visualization(window, position, info) -> None:
+    """
+    Prepares and show player's board and text.
+    :param window:
+    :param int position: Where to show this in the window.
+    :param dict info:
+    :return None:
+    """
     draw_board(window, position, (0, 123, 0), info['player_state'], info)
     content = ["Step: {}".format(info['player_step'])]
     info['player_solved'] = info['player_state'] == info['goal_state']
-    write_info(window, position, content, info['player_solved'])  # content, solved, board_width + 230)
+    write_info(window, position, content, info['player_solved'])
 
 
-def solution_visualization(window, position, info):
+def solution_visualization(window, position, info) -> None:
+    """
+    Prepares and show computer's board and text.
+    :param window:
+    :param int position: Where to show this in the window.
+    :param dict info:
+    :return None:
+    """
     draw_board(window, position, (123, 0, 0), info['cpu_state'], info)
     content = ["Step: {:0>{}}/{}".format(info['cpu_step'], len(str(info['search_algo_best_solution'])),
                                          info['search_algo_best_solution']),
@@ -86,7 +132,16 @@ def solution_visualization(window, position, info):
     write_info(window, position, content, info['cpu_solved'])
 
 
-def draw_board(window, x_offset, color, state, info):
+def draw_board(window, x_offset, color, state, info) -> None:
+    """
+    Function that draws the board.
+    :param window:
+    :param int x_offset:
+    :param tuple color:
+    :param list state:
+    :param dict info:
+    :return None:
+    """
     basic_font = pygame.font.Font('freesansbold.ttf', 20)
     tile_size = info['tile_size']
     for position, tile_number in enumerate(state):
@@ -101,12 +156,19 @@ def draw_board(window, x_offset, color, state, info):
         pygame.draw.rect(window, (255, 255, 255), (tile_x_position, tile_y_position, tile_size, tile_size), 3)
         text_position = content.get_rect()
         text_position.center = tile_x_position + int(tile_size / 2), tile_y_position + int(tile_size / 2)
-
         window.blit(content, text_position)
 
 
 # noinspection SpellCheckingInspection
-def write_info(window, x_position, content, solved):
+def write_info(window, x_position, content, solved) -> None:
+    """
+    Write text below the board with relevant information.
+    :param window:
+    :param x_position: Where to write the information
+    :param list content: List of sentences that will be written on different lines
+    :param bool solved: Boolean that says if puzzle is solved or not
+    :return None:
+    """
     basic_font = pygame.font.Font('Helvetica-Normal.ttf', 20)
 
     for index, item in enumerate(content):
@@ -128,12 +190,16 @@ def write_info(window, x_position, content, solved):
         pygame.draw.rect(window, (0, 0, 0), (x_position, board_width + 200, board_width, 100))
 
 
-def move(info, key):
+def move(info, key) -> dict:
+    """
+    Updates player state according to the key pressed by player.
+    :param dict info:
+    :param event.key key:
+    :return dict info:
+    """
     player_state, cpu_step, player_step = info['player_state'], info['cpu_step'], info['player_step']
     board_size = info['board_size']
-    x_zero = player_state.index(0) % board_size
-    y_zero = player_state.index(0) // board_size
-
+    x_zero, y_zero = player_state.index(0) % board_size, player_state.index(0) // board_size
     if x_zero > 0 and key == pygame.K_RIGHT:
         player_state[y_zero * board_size + x_zero] = player_state[y_zero * board_size + x_zero - 1]
         player_state[y_zero * board_size + x_zero - 1] = 0

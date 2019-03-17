@@ -153,16 +153,20 @@ class TestNPuzzle(unittest.TestCase):
 
     def test_puzzle_has_snail_solution(self):
         puzzle = [0, 1, 2, 3, 5, 4, 7, 6, 8]
-        self.assertEqual(utils.puzzle_has_snail_solution(puzzle), False)
+        self.assertEqual(utils.puzzle_has_solution(puzzle, 'snail'), False)
+        self.assertEqual(utils.puzzle_has_solution(puzzle, 'classic'), True)
 
         puzzle = [0, 1, 3, 2, 4, 5, 6, 7, 8]
-        self.assertEqual(utils.puzzle_has_snail_solution(puzzle), True)
+        self.assertEqual(utils.puzzle_has_solution(puzzle, 'snail'), True)
+        self.assertEqual(utils.puzzle_has_solution(puzzle, 'classic'), False)
 
         puzzle = [4, 1, 2, 3, 8, 5, 6, 7, 0, 9, 10, 11, 12, 13, 14, 15]
-        self.assertEqual(utils.puzzle_has_snail_solution(puzzle), False)
+        self.assertEqual(utils.puzzle_has_solution(puzzle, 'snail'), False)
+        self.assertEqual(utils.puzzle_has_solution(puzzle, 'classic'), True)
 
         puzzle = [8, 1, 2, 3, 4, 5, 6, 7, 0, 9, 10, 11, 12, 13, 14, 15]
-        self.assertEqual(utils.puzzle_has_snail_solution(puzzle), True)
+        self.assertEqual(utils.puzzle_has_solution(puzzle, 'snail'), True)
+        self.assertEqual(utils.puzzle_has_solution(puzzle, 'classic'), False)
 
 
 if __name__ == "__main__":

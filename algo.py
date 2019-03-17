@@ -2,42 +2,57 @@ import node
 import utils
 import visu
 
+
 size = 3
 goal = utils.create_goal(size, 'snail')
 # goal = utils.create_goal(size, 'classic')
 
 
-def algo(initial_node, mode, verbose=False, goal_kind='snail') -> None:
+algo_info = {
+    'heuristic': 'improved_manhattan',
+    'search_algo': 'ida_star',
+    'allowed_search_algos': ['a_star', 'greedy', 'uniform_cost', 'ida_star'],
+    'goal_kind': 'snail',
+    'verbose': False,
+    'error': False,
+    'depth_limit': None,
+    'time_complexity': 1,
+    'space_complexity': 1,
+    'start_time': None,
+    'board_size': size,
+    'show_visu': True,
+    'visu_mode': 'fight',
+}
+
+
+def algo(initial_node, info) -> None:
     """
     Algorithm pre-treatment to check if initial state has a solution and redirect to the relevant function
     depending on the mode.
     :param Node initial_node: Problem node with initial conditions.
-    :param str mode: Mode of algorithm. Has to be in ["a_star", "greedy", "uniform_cost", "ida_star"]
-    :param bool verbose: verbose mode will print more information during search
-    :param str goal_kind: define what is the goal snail or classic
+    :param dict info: Dict with relevant info for algo
     :return: None
     """
-    if mode not in ['a_star', 'greedy', 'uniform_cost', 'ida_star']:
-        return finished(None, 0, 0, error=True)
-    if utils.puzzle_has_solution(initial_node.state, goal_kind) is False:
-        return finished(None, 0, 0, verbose=verbose)
+    if info['search_algo'] not in info['allowed_search_algos']:
+        info['error'] = True
+        return finished(None, info)
+    if utils.puzzle_has_solution(initial_node.state, info['goal_kind']) is False:
+        return finished(None, info)
     if initial_node.finished is True:
-        return finished(initial_node, 1, 1, verbose=verbose, mode=mode)
-    if mode == 'ida_star':
-        return search_ida_star(initial_node, verbose=verbose)
+        return finished(initial_node, info)
+    if info['search_algo'] == 'ida_star':
+        return search_ida_star(initial_node, info)
     else:
-        return search_algo(initial_node, mode, verbose=verbose)
+        return search_algo(initial_node, info)
 
 
-def search_algo(initial_node, mode, verbose=False) -> None:
+def search_algo(initial_node, info) -> None:
     """
     Algorithm for A*, greedy search or uniform_cost search to find solution to problem node.
     :param Node initial_node: Problem node with initial conditions.
-    :param str mode: Mode of algorithm. Has to be in ["a_star", "greedy", "uniform_cost"]
-    :param bool verbose: verbose mode will print more information during search
+    :param dict info: Dict with relevant info for algo
     :return: None
     """
-    time_complexity, space_complexity = 1, 1
     nodes_queue = [initial_node]
     explored_states = {(tuple(initial_node.state),)}
     while nodes_queue:
@@ -46,54 +61,54 @@ def search_algo(initial_node, mode, verbose=False) -> None:
             state = utils.action(best_node.state, action)
             if tuple(state) not in explored_states:
                 new_node = node.Node(best_node, action, state)
-                time_complexity += 1
+                info['time_complexity'] += 1
                 nodes_queue.append(new_node)
                 explored_states.add(tuple(new_node.state))
-                space_complexity = max(space_complexity, len(explored_states))
-                if verbose:
-                    verbose_print(time_complexity, space_complexity, nodes_queue, new_node)
+                info['space_complexity'] = max(info['space_complexity'], len(explored_states))
+                if info['verbose']:
+                    verbose_print(info, nodes_queue, new_node)
                 if new_node.finished is True:
-                    return finished(new_node, time_complexity, space_complexity, verbose=verbose, mode=mode)
+                    return finished(new_node, info)
         nodes_queue.remove(best_node)
-        nodes_queue = sort_queue(nodes_queue, mode)
-    return finished(None, 0, 0, verbose=verbose)
+        nodes_queue = sort_queue(nodes_queue, info['search_algo'])
+    return finished(None, info)
 
 
-def search_ida_star(initial_node, limit=None, time_complexity=1, space_complexity=1, verbose=False) -> None:
+def search_ida_star(initial_node, info) -> None:
     """
     IDA* algorithm.
     :param Node initial_node: Problem node with initial conditions.
-    :param int limit: Depth limit of this iteration of IDA
-    :param int time_complexity: Time complexity when the iteration starts
-    :param int space_complexity: Space complexity when the iteration starts
-    :param bool verbose: verbose mode will print more information during search
+    :param dict info: Dict with relevant info for algo
     :return: None
     """
     nodes_queue = [initial_node]
     explored_states = {(tuple(initial_node.state),)}
-    if limit is None:
-        limit = initial_node.evaluation
-    new_limit = None
+    if info['depth_limit'] is None:
+        info['depth_limit'] = initial_node.evaluation
+    info['new_depth_limit'] = None
     while nodes_queue:
         best_node = nodes_queue[0]
         for action in best_node.possible_actions:
-            time_complexity += 1
+            info['time_complexity'] += 1
             new_node = node.Node(best_node, action)
-            if new_node.evaluation <= limit:
+            if new_node.evaluation <= info['depth_limit']:
                 nodes_queue.insert(0, new_node)
                 explored_states.add(tuple(new_node.state))
-                space_complexity = max(space_complexity, len(explored_states))
-                if verbose:
-                    verbose_print(time_complexity, space_complexity, nodes_queue, new_node)
+                info['space_complexity'] = max(info['space_complexity'], len(explored_states))
+                if info['verbose']:
+                    verbose_print(info, nodes_queue, new_node)
                 if new_node.finished is True:
-                    return finished(new_node, time_complexity, space_complexity, verbose=verbose, mode='ida_star')
+                    return finished(new_node, info)
+            elif info['new_depth_limit'] is None:
+                info['new_depth_limit'] = new_node.evaluation
             else:
-                new_limit = new_node.evaluation if new_limit is None else min(new_limit, new_node.evaluation)
+                info['new_depth_limit'] = min(info['new_depth_limit'], new_node.evaluation)
         nodes_queue.remove(best_node)
-    if new_limit is not None:
-        search_ida_star(initial_node, new_limit, time_complexity, space_complexity)
+    if info['new_depth_limit'] is not None:
+        info['depth_limit'] = info['new_depth_limit']
+        search_ida_star(initial_node, info)
     else:
-        return finished(None, 0, 0, verbose=verbose)
+        return finished(None, info)
 
 
 def sort_queue(queue, mode) -> list:
@@ -113,79 +128,58 @@ def sort_queue(queue, mode) -> list:
     return sorted_queue
 
 
-def verbose_print(time_complexity, space_complexity, sorted_queue, new_node) -> None:
+def verbose_print(info, sorted_queue, new_node) -> None:
     """
     Print information during the search.
-    :param int time_complexity:
-    :param int space_complexity:
+    :param dict info: Dict with relevant info for algo
     :param list sorted_queue:
     :param Node new_node:
     :return None:
     """
-    if time_complexity % 10000 == 0:
+    if info['time_complexity'] % 10000 == 0:
         print("time complexity = {}, space complexity = {}, queue = {}".format(
-            time_complexity, space_complexity, len(sorted_queue)))
+            info['time_complexity'], info['space_complexity'], len(sorted_queue)))
         print(utils.puzzle_formatted_str(new_node.state))
 
 
-def finished(finish_node, time_complexity, space_complexity, error=False, verbose=False, mode=None) -> None:
+def finished(finish_node, info) -> None:
     """
     Function that print solution when found.
     :param Node finish_node: Solution leaf.
-    :param int time_complexity: number of nodes that have been created.
-    :param int space_complexity: max concurential nodes in memory.
-    :param bool error: if there is an error in the parameters given to search algo.
-    :param bool verbose: verbose mode will print more information during search
-    :param str mode: search algorithm mode
+    :param dict info: Dict with relevant info for algo
     :return: None
     """
-    if error is True:
-        print("The mode must be in ['a_star', 'greedy', 'uniform_cost', 'ida_star']")
+    if info['error'] is True:
+        print("The mode must be in {}".format(info['allowed_search_algos']))
     elif finish_node is None:
         print("This problem has no solution.")
     else:
-        print(utils.puzzle_formatted_str(finish_node.state))
         solution_list = [finish_node]
         while finish_node.parent:
             finish_node = finish_node.parent
             solution_list.insert(0, finish_node)
-
         print("""
         This problem can be solved in {} steps.
         The time_complexity is {} and space_complexity is {}
         The steps to solve it are the following {}""".format(
-            len(solution_list) - 1, time_complexity, space_complexity, [item.moved_tile for item in solution_list[1:]]))
-
-        if verbose:
+            len(solution_list) - 1, info['time_complexity'], info['space_complexity'],
+            [item.moved_tile for item in solution_list[1:]]))
+        if info['verbose']:
             for item in solution_list:
                 print(utils.puzzle_formatted_str(item.state))
 
-        info = utils.make_info(size, solution_list, mode, time_complexity, space_complexity)
-        visu.visualization(info, 'fight')
-        # if not fight show just solution
+        visu.visualization(info, solution_list)
 
 
 if __name__ == "__main__":
-    init_state = [1, 2, 8, 3, 4, 7, 5, 6, 0]
-    # size = 5
+    # init_state = [1, 2, 8, 3, 4, 7, 5, 6, 0]
+    # init_state = [4, 6, 5, 0, 2, 1, 7, 8, 3]  # 25 etapes?
+    # init_state = [6, 4, 5, 0, 2, 1, 7, 8, 3] # classic
     init_state = [i for i in range(size ** 2)]
     tmp = init_state[size]
     init_state[size] = init_state[size + 1]
     init_state[size + 1] = tmp
-    init_state = [4, 6, 5, 0, 2, 1, 7, 8, 3] # 25 etapes?
-    # init_state = [6, 4, 5, 0, 2, 1, 7, 8, 3] # classic
-    init_state2 = init_state.copy()
-    # init_state = [1, 3, 2, 0]
-    # init_state = [1, 2, 0, 3]
     print(utils.puzzle_formatted_str(init_state))
     init_node = node.Node(None, None, init_state)
-    # initial_node = node.Node(None, None, utils.create_goal(3), utils.create_goal(3))
-    # print(initial_node.__str__())
-    # search_algo(init_node, mode="a_star", verbose=True)
-    algo(init_node, mode="a_star", verbose=False)
-    # algo(init_node, mode="a_star", verbose=False, goal_kind='classic')
-    print(init_state)
-    init_node = node.Node(None, None, init_state2)
-    algo(init_node, mode="ida_star", verbose=False)
-    # algo(init_node, mode="ida_star", verbose=False, goal_kind='classic')
-    # search_algo(init_node, mode="uniform_cost")
+
+    algo(init_node, algo_info)

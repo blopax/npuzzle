@@ -4,19 +4,25 @@ import algo
 
 
 class Node:
-    def __init__(self, parent=None, moved_tile=None, state=None):
+    def __init__(self, parent=None, moved_tile=None, state=None, heuristic_kind='improved_manhattan'):
         self.parent = parent
         self.moved_tile = moved_tile
         if parent is None:
             self.cost = 0
+            self.heuristic_kind = heuristic_kind
         else:
             self.cost = self.parent.cost + 1
+            self.heuristic_kind = self.parent.heuristic_kind
         if state is None:
             self.state = utils.action(parent.state, moved_tile)
         else:
             self.state = state
-        self.heuristic = self.improved_heuristic_manhattan(algo.goal)
-        # self.heuristic = self.heuristic_manhattan(algo.goal)
+        if self.heuristic_kind == 'improved_manhattan':
+            self.heuristic = self.improved_heuristic_manhattan(algo.goal)
+        elif self.heuristic_kind == 'manhattan':
+            self.heuristic = self.heuristic_manhattan(algo.goal)
+        else:
+            self.heuristic = self.heuristic_misplaced(algo.goal)
         self.evaluation = self.cost + self.heuristic
         self.possible_actions = self.find_possible_actions()
         self.finished = (self.state == algo.goal)
@@ -133,12 +139,4 @@ finished = {}\n""".format(id(self.parent), self.moved_tile,
 
 if __name__ == "__main__":
     initial_node = Node(None, None, [1, 0, 2, 3, 4, 5, 6, 7, 8])
-    print(initial_node.heuristic)
-    initial_node = Node(None, None, [1, 2, 0, 4, 3, 5, 6, 7, 8])
-    print(initial_node.heuristic)
-
-    # print(initial_node.__str__())
-    # print("goal =\n{}".format(utils.puzzle_formatted_str(utils.create_goal(3))))
-    # second_node = Node(initial_node, 2, None)
-    # print(second_node.__str__())
-    # print("goal =\n{}".format(utils.puzzle_formatted_str(utils.create_goal(3))))
+    print(initial_node.__str__())
