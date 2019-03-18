@@ -6,7 +6,6 @@ import utils
 import os
 
 
-
 def get_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("-f", "--file", type=str, required= True,

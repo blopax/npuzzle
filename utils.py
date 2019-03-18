@@ -1,7 +1,8 @@
 import math
 import copy
 
-def create_info_algo(args) ->dict :
+
+def create_info_algo(args) -> dict:
     """
     Fill the info_algo dico needed for the program based on the arguments parsed"
     :param class_object args
@@ -22,6 +23,7 @@ def create_info_algo(args) ->dict :
         "show_visu": args.visual,
         "visu_mode": args.visual_mode
     }
+
 
 def fill_right(n, sorted_list, x, y, i) -> (list, int, int, int):
     """
