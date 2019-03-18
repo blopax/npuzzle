@@ -1,6 +1,27 @@
 import math
 import copy
 
+def create_info_algo(args) ->dict :
+    """
+    Fill the info_algo dico needed for the program based on the arguments parsed"
+    :param class_object args
+    :return dict: dict containing all the information needed to run the algorithm in the program
+    """
+    return {
+        "heuristic": args.heuristic,
+        "search_algo": args.algorithm,
+        "goal_kind": args.puzzle,
+        "verbose": args.verbosity,
+        "error": '',
+        "depth_limit": None,
+        "time_complexity": 1,
+        "space_complexity": 1,
+        "start_time": None,
+        "board_size": 0,
+        "show_time": args.time,
+        "show_visu": args.visual,
+        "visu_mode": args.visual_mode
+    }
 
 def fill_right(n, sorted_list, x, y, i) -> (list, int, int, int):
     """

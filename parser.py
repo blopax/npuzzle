@@ -15,7 +15,7 @@ def strip_comment(line):
     return line.strip()
 
 
-def clean_data(error, data) -> (str, list):
+def clean_data(algo_info, data) -> (str, list):
     raw = data.read()
     newline_split = raw.split('\n')
     uncommented = []
@@ -32,18 +32,18 @@ def clean_data(error, data) -> (str, list):
     for each in clean_data:
         clean_data_int.append([int(numbers) for numbers in each])
 
-    return error, clean_data_int
+    return clean_data_int
 
 
-def check_first_line(error, data) -> (str, int):
+def check_first_line(algo_info, data):
     if len(data) != 1 or data[0] < 2 or type(data[0]) != int:
-        error += "The first line of the file containing the size of the puzzle is not correctly formatted (desired input : single integer - received input: {0})\n".format(
+        algo_info["error"] += "The first line of the file containing the size of the puzzle is not correctly formatted (desired input : single integer (>2) - received input: {0})\n".format(
             data)
-        return error, 0
-    return error, data[0]
+        algo_info["board_size"] = 0
+    algo_info["board_size"] = data[0]
 
 
-def check_lenght(error, size, data) -> str:
+def check_lenght(algo_info, data):
     size_lst = []
     line_nb = 0
     for each in data:
@@ -51,19 +51,17 @@ def check_lenght(error, size, data) -> str:
         line_nb += 1
 
     for index, each in enumerate(size_lst):
-        if each != size:
-            error += "The width of the puzzle in line {1} does not equal the size of the puzzle (width: {0} // size: {2})\n".format(
-                each, index, size)
+        if each != algo_info["board_size"]:
+            algo_info["error"] += "The width of the puzzle in line {1} does not equal the size of the puzzle (width: {0} // size: {2})\n".format(
+                each, index, algo_info["board_size"])
 
-    if line_nb != size:
-        error += "The number of line(s) of the puzzle does not equal the size of the puzzle (nb_lines: {0} // size: {1})\n".format(
-            line_nb, size)
-
-    return error
+    if line_nb != algo_info["board_size"]:
+        algo_info["error"] += "The number of lines of the puzzle does not equal the size of the puzzle (nb_lines: {0} // size: {1})".format(
+            line_nb, algo_info["board_size"])
 
 
-def check_values(error, size, data) -> str:
-    expected_values = [i for i in range(size ** 2)]
+def check_values(algo_info, data):
+    expected_values = [i for i in range(algo_info["board_size"] ** 2)]
     actual_values = []
     for each in data:
         for values in each:
@@ -71,42 +69,40 @@ def check_values(error, size, data) -> str:
 
     diff = set(expected_values) - set(actual_values)
     if diff:
-        error += "The puzzle does not contain the expected values considering his size {0}\n".format(
-            size)
-    return error
+        algo_info["error"] += "The puzzle does not contain the expected values considering his size {0}. Missing value(s): {1}".format(
+            algo_info["board_size"], diff)
+    else:
+        algo_info["puzzle"] = actual_values
 
 
-def check_file(error, puzzle_file) -> str:
+def check_file(algo_info, puzzle_file):
     try:
-        size = 0
         if puzzle_file == "/dev/random":
             raise Exception("WrongFile")
         with open(puzzle_file, 'r') as f:
-            error, data_puzzle = clean_data(error, f)
+            data_puzzle = clean_data(algo_info, f)
 
         print(data_puzzle)
         if data_puzzle == []:
             raise Exception("EmptyFile")
 
-        error, size = check_first_line(error, data_puzzle[0])
-        if size < 2:
-            error = "The size cannot be inferior to 2\n"
-        if error == '':
-            error = check_lenght(error, size, data_puzzle[1:])
-            error = check_values(error, size, data_puzzle[1:])
+        check_first_line(algo_info, data_puzzle[0])
+        if algo_info["board_size"] < 2:
+            algo_info["error"] += "The size cannot be inferior to 2"
+        if algo_info["error"] == '':
+            check_lenght(algo_info, data_puzzle[1:])
+            check_values(algo_info, data_puzzle[1:])
 
     except IOError:
-        error = "{} cannot be open\n".format(puzzle_file)
+        algo_info["error"] += "{} cannot be open".format(puzzle_file)
     except FileNotFoundError:
-        error = "{} cannot be found\n".format(puzzle_file)
+        algo_info["error"] += "{} cannot be found".format(puzzle_file)
     except UnboundLocalError:
-        error = "Some data is missing\n"
+        algo_info["error"] += "Some data is missing"
     except ValueError:
-        error = "The input data contains non-integer values"
+        algo_info["error"] += "The input data contains non-integer values"
     except Exception as e:
-        if e.__str__ == "EmptyFile":
-            error = "{0} error: {1} is empty\n".format(e, puzzle_file)
+        if e.__str__() == "EmptyFile":
+            algo_info["error"] += "{0} error: {1} is empty".format(e, puzzle_file)
         if e.__str__() == "WrongFile":
-            print("pouf")
-            error = "{0} error: {1} is  not accepted\n".format(e, puzzle_file)
-    return error
+            algo_info["error"] += "{0} error: {1} is  not accepted".format(e, puzzle_file)

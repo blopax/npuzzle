@@ -1,30 +1,6 @@
 import node
 import utils
-import visu
 import time
-
-
-size = 4
-goal = utils.create_goal(size, 'snail')
-# goal = utils.create_goal(size, 'classic')
-
-
-algo_info = {
-    'heuristic': 'improved_manhattan',
-    'search_algo': 'ida_star',
-    'allowed_search_algos': ['a_star', 'greedy', 'uniform_cost', 'ida_star'],
-    'goal_kind': 'snail',
-    'verbose': False,
-    'error': False,
-    'depth_limit': None,
-    'time_complexity': 1,
-    'space_complexity': 1,
-    'start_time': None,
-    'board_size': size,
-    'show_time': True,
-    'show_visu': True,
-    'visu_mode': 'fight',
-}
 
 
 def algo(initial_node, info) -> None:
@@ -35,9 +11,7 @@ def algo(initial_node, info) -> None:
     :param dict info: Dict with relevant info for algo
     :return: None
     """
-    if info['search_algo'] not in info['allowed_search_algos']:
-        info['error'] = True
-        return finished(None, info)
+
     if utils.puzzle_has_solution(initial_node.state, info['goal_kind']) is False:
         return finished(None, info)
     if initial_node.finished is True:
@@ -153,9 +127,8 @@ def finished(finish_node, info) -> None:
     :param dict info: Dict with relevant info for algo
     :return: None
     """
-    if info['error'] is True:
-        print("The mode must be in {}".format(info['allowed_search_algos']))
-    elif finish_node is None:
+
+    if finish_node is None:
         print("This problem has no solution.")
     else:
         info['time'] = round(time.time() - info['time'], 2)
@@ -174,8 +147,9 @@ def finished(finish_node, info) -> None:
         if info['verbose']:
             for item in solution_list:
                 print(utils.puzzle_formatted_str(item.state))
-
-        visu.visualization(info, solution_list)
+        if info["show_visu"]:
+            import visu
+            visu.visualization(info, solution_list)
 
 
 if __name__ == "__main__":
