@@ -95,7 +95,7 @@ def update_info(info, key) -> dict:
         info['cpu_step'] -= 1
         info['cpu_state'] = info['solution_list'][info['cpu_step']].state
         play_sound = True
-    if play_sound is True and 'sound' in info.keys():
+    if play_sound is True and info["sound"] is not None:
         info['sound'].play()
     return info
 

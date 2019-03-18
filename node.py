@@ -4,28 +4,33 @@ import algo
 
 
 class Node:
-    def __init__(self, parent=None, moved_tile=None, state=None, heuristic_kind='improved_manhattan'):
+    def __init__(self, parent=None, moved_tile=None, state=None, heuristic_kind=None, size=None, goal=None):
         self.parent = parent
         self.moved_tile = moved_tile
         if parent is None:
             self.cost = 0
             self.heuristic_kind = heuristic_kind
+            self.size = size
+            self.goal = goal
+            print(self.goal)
         else:
             self.cost = self.parent.cost + 1
             self.heuristic_kind = self.parent.heuristic_kind
+            self.size = self.parent.size
+            self.goal = self.parent.goal
         if state is None:
             self.state = utils.action(parent.state, moved_tile)
         else:
             self.state = state
         if self.heuristic_kind == 'improved_manhattan':
-            self.heuristic = self.improved_heuristic_manhattan(algo.goal)
+            self.heuristic = self.improved_heuristic_manhattan()
         elif self.heuristic_kind == 'manhattan':
-            self.heuristic = self.heuristic_manhattan(algo.goal)
+            self.heuristic = self.heuristic_manhattan()
         else:
-            self.heuristic = self.heuristic_misplaced(algo.goal)
+            self.heuristic = self.heuristic_misplaced()
         self.evaluation = self.cost + self.heuristic
         self.possible_actions = self.find_possible_actions()
-        self.finished = (self.state == algo.goal)
+        self.finished = (self.state == self.goal)
 
     def __str__(self):
         string = """id(parent) = {}
@@ -66,23 +71,21 @@ finished = {}\n""".format(id(self.parent), self.moved_tile,
             possible_actions.remove(self.moved_tile)
         return possible_actions
 
-    def heuristic_misplaced(self, goal) -> int:
+    def heuristic_misplaced(self) -> int:
         """
         Simple consistent heuristic that counts the number of misplaced tiles.
-        :param list goal:
         :return int misplaced tiles: Nb of misplaced tiles
         """
         misplaced_tiles = 0
         for index, item in enumerate(self.state):
-            if item != 0 and item != goal[index]:
+            if item != 0 and item != self.goal[index]:
                 misplaced_tiles += 1
         return misplaced_tiles
 
-    def heuristic_manhattan(self, goal) -> int:
+    def heuristic_manhattan(self) -> int:
         """
         Manhattan distance is another consistent heuristic. Count the number move that any tile (but the 0 one) needs
         to get to goal_position, and sums it for all the tiles.
-        :param list goal:
         :return int manhattan_distance:
         """
         manhattan_distance = 0
@@ -91,26 +94,25 @@ finished = {}\n""".format(id(self.parent), self.moved_tile,
             if item != 0:
                 item_x = index % size
                 item_y = index // size
-                goal_index = goal.index(item)
+                goal_index = self.goal.index(item)
                 goal_x = goal_index % size
                 goal_y = goal_index // size
                 manhattan_distance += abs(item_x - goal_x) + abs(item_y - goal_y)
         return manhattan_distance
 
-    def improved_heuristic_manhattan(self, goal) -> int:
+    def improved_heuristic_manhattan(self) -> int:
         """
         Improve heuristic manhattan by adding 2 each time 2 tiles are on their final line or column but in the inverse
         position they should be. (In this case one of the tile has to move to let the other pass and then come back
         to the correct line/column. This heuristic is also consistent.
-        :param list goal: goal_state
         :return int distance: heuristic
         """
-        distance = self.heuristic_manhattan(goal)
-        for index in range(algo.size):
-            line = self.state[index * algo.size: (index + 1) * algo.size]
-            goal_line = goal[index * algo.size: (index + 1) * algo.size]
-            column = [self.state[i] for i in [index + j * algo.size for j in range(algo.size)]]
-            goal_column = [goal[i] for i in [index + j * algo.size for j in range(algo.size)]]
+        distance = self.heuristic_manhattan()
+        for index in range(self.size):
+            line = self.state[index * self.size: (index + 1) * self.size]
+            goal_line = self.goal[index * self.size: (index + 1) * self.size]
+            column = [self.state[i] for i in [index + j * self.size for j in range(self.size)]]
+            goal_column = [self.goal[i] for i in [index + j * self.size for j in range(self.size)]]
             distance += 2 * (self.inversed_tiles(line, goal_line) + self.inversed_tiles(column, goal_column))
         return distance
 
