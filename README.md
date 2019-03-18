@@ -69,7 +69,7 @@ If the visualization option is triggered, a visual result is displayed. (2 optio
 fight mode where the player can try to beat the computer)
 
 
-![N-puzzle visualization](https://giphy.com/gifs/52EXUZ3c5vt9P5yMuG)
+![N-puzzle visualization](https://gph.is/g/4MdApxZ)
 
 
 ## Unit tests
