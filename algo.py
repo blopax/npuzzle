@@ -1,9 +1,10 @@
 import node
 import utils
 import visu
+import time
 
 
-size = 3
+size = 4
 goal = utils.create_goal(size, 'snail')
 # goal = utils.create_goal(size, 'classic')
 
@@ -20,6 +21,7 @@ algo_info = {
     'space_complexity': 1,
     'start_time': None,
     'board_size': size,
+    'show_time': True,
     'show_visu': True,
     'visu_mode': 'fight',
 }
@@ -41,8 +43,10 @@ def algo(initial_node, info) -> None:
     if initial_node.finished is True:
         return finished(initial_node, info)
     if info['search_algo'] == 'ida_star':
+        info['time'] = time.time()
         return search_ida_star(initial_node, info)
     else:
+        info['time'] = time.time()
         return search_algo(initial_node, info)
 
 
@@ -154,6 +158,7 @@ def finished(finish_node, info) -> None:
     elif finish_node is None:
         print("This problem has no solution.")
     else:
+        info['time'] = round(time.time() - info['time'], 2)
         solution_list = [finish_node]
         while finish_node.parent:
             finish_node = finish_node.parent
@@ -164,6 +169,8 @@ def finished(finish_node, info) -> None:
         The steps to solve it are the following {}""".format(
             len(solution_list) - 1, info['time_complexity'], info['space_complexity'],
             [item.moved_tile for item in solution_list[1:]]))
+        if info['show_time']:
+            print('Time used: {}s'.format(info['time']))
         if info['verbose']:
             for item in solution_list:
                 print(utils.puzzle_formatted_str(item.state))
@@ -176,6 +183,7 @@ if __name__ == "__main__":
     # init_state = [4, 6, 5, 0, 2, 1, 7, 8, 3]  # 25 etapes?
     # init_state = [6, 4, 5, 0, 2, 1, 7, 8, 3] # classic
     init_state = [i for i in range(size ** 2)]
+    # random.shuffle(init_state)
     tmp = init_state[size]
     init_state[size] = init_state[size + 1]
     init_state[size + 1] = tmp

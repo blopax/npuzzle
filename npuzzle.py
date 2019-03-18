@@ -32,5 +32,23 @@ if __name__ == "__main__":
         print(error)
 
 
-# parser add visual fight/solution mode, node, add the heuristic to change accordingly, utils, choose
-# goal_kind accordingly
+# parser add relevant info and feed info dictionary (where +, maybe create util functions with default)
+# + create initial Node
+
+
+# algo_info = {
+#     +  'heuristic': 'improved_manhattan',
+#     +  'search_algo': 'ida_star',
+#     'allowed_search_algos': ['a_star', 'greedy', 'uniform_cost', 'ida_star'],
+#     +  'goal_kind': 'snail',
+#     +  'verbose': False,
+#     'error': False,
+#     'depth_limit': None,
+#     'time_complexity': 1,
+#     'space_complexity': 1,
+#     'start_time': None,
+#     +   'board_size': size,
+#     +   'show_time': True,
+#     +   'show_visu': True,
+#     +   'visu_mode': 'fight',
+# }

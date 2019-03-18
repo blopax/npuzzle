@@ -123,11 +123,13 @@ def solution_visualization(window, position, info) -> None:
     :return None:
     """
     draw_board(window, position, (123, 0, 0), info['cpu_state'], info)
-    content = ["Step: {:0>{}}/{}".format(info['cpu_step'], len(str(info['search_algo_best_solution'])),
+    content = ["Move: {:0>{}}/{}".format(info['cpu_step'], len(str(info['search_algo_best_solution'])),
                                          info['search_algo_best_solution']),
                "Search algorithm used: {}".format(info['search_algo']),
                "Solution time complexity: {}".format(info['time_complexity']),
                "Solution space_complexity: {}".format(info['space_complexity'])]
+    if info['show_time']:
+        content.append("Effective time taken: {}s".format(info['time']))
     info['cpu_solved'] = info['cpu_step'] == info['search_algo_best_solution']
     write_info(window, position, content, info['cpu_solved'])
 
