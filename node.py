@@ -1,6 +1,5 @@
 import math
 import utils
-import algo
 
 
 class Node:
@@ -12,7 +11,6 @@ class Node:
             self.heuristic_kind = heuristic_kind
             self.size = size
             self.goal = goal
-            print(self.goal)
         else:
             self.cost = self.parent.cost + 1
             self.heuristic_kind = self.parent.heuristic_kind

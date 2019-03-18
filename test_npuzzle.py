@@ -1,136 +1,135 @@
 import unittest
-import algo
 import node
 import utils
 
 
 class TestNPuzzle(unittest.TestCase):
     def test_heuristic_misplaced(self):
-        algo.size = 2
-        algo.goal = utils.create_goal(algo.size)
-        test_node = node.Node(None, None, [1, 0, 2, 3])
-        self.assertEqual(test_node.heuristic_misplaced(algo.goal), 1)
-        test_node = node.Node(None, None, [0, 3, 2, 1])
-        self.assertEqual(test_node.heuristic_misplaced(algo.goal), 3)
-        test_node = node.Node(None, None, [1, 2, 0, 3])
-        self.assertEqual(test_node.heuristic_misplaced(algo.goal), 0)
-        test_node = node.Node(None, None, [0, 1, 2, 3])
-        self.assertEqual(test_node.heuristic_misplaced(algo.goal), 2)
+        size = 2
+        goal = utils.create_goal(size)
+        test_node = node.Node(None, None, [1, 0, 2, 3], None, size, goal)
+        self.assertEqual(test_node.heuristic_misplaced(), 1)
+        test_node = node.Node(None, None, [0, 3, 2, 1], None, size, goal)
+        self.assertEqual(test_node.heuristic_misplaced(), 3)
+        test_node = node.Node(None, None, [1, 2, 0, 3], None, size, goal)
+        self.assertEqual(test_node.heuristic_misplaced(), 0)
+        test_node = node.Node(None, None, [0, 1, 2, 3], None, size, goal)
+        self.assertEqual(test_node.heuristic_misplaced(), 2)
 
-        algo.size = 3
-        algo.goal = utils.create_goal(algo.size)
-        test_node = node.Node(None, None, [1, 0, 2, 3, 4, 5, 6, 7, 8])
-        self.assertEqual(test_node.heuristic_misplaced(algo.goal), 7)
-        test_node = node.Node(None, None, algo.goal)
-        self.assertEqual(test_node.heuristic_misplaced(algo.goal), 0)
-        test_node = node.Node(None, None, [1, 2, 3, 0, 4, 5, 6, 7, 8])
-        self.assertEqual(test_node.heuristic_misplaced(algo.goal), 5)
-        test_node = node.Node(None, None, [1, 0, 2, 8, 4, 5, 7, 6, 3])
-        self.assertEqual(test_node.heuristic_misplaced(algo.goal), 4)
+        size = 3
+        goal = utils.create_goal(size)
+        test_node = node.Node(None, None, [1, 0, 2, 3, 4, 5, 6, 7, 8], None, size, goal)
+        self.assertEqual(test_node.heuristic_misplaced(), 7)
+        test_node = node.Node(None, None, goal, None, size, goal)
+        self.assertEqual(test_node.heuristic_misplaced(), 0)
+        test_node = node.Node(None, None, [1, 2, 3, 0, 4, 5, 6, 7, 8], None, size, goal)
+        self.assertEqual(test_node.heuristic_misplaced(), 5)
+        test_node = node.Node(None, None, [1, 0, 2, 8, 4, 5, 7, 6, 3], None, size, goal)
+        self.assertEqual(test_node.heuristic_misplaced(), 4)
 
-        algo.size = 4
-        algo.goal = utils.create_goal(algo.size)
-        test_node = node.Node(None, None, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15])
-        self.assertEqual(test_node.heuristic_misplaced(algo.goal), 15)
-        test_node = node.Node(None, None, algo.goal)
-        self.assertEqual(test_node.heuristic_misplaced(algo.goal), 0)
+        size = 4
+        goal = utils.create_goal(size)
+        test_node = node.Node(None, None, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], None, size, goal)
+        self.assertEqual(test_node.heuristic_misplaced(), 15)
+        test_node = node.Node(None, None, goal, None, size, goal)
+        self.assertEqual(test_node.heuristic_misplaced(), 0)
 
     def test_heuristic_manhattan(self):
-        algo.size = 2
-        algo.goal = utils.create_goal(algo.size)
-        test_node = node.Node(None, None, [1, 0, 2, 3])
-        self.assertEqual(test_node.heuristic_manhattan(algo.goal), 2)
-        test_node = node.Node(None, None, [0, 3, 2, 1])
-        self.assertEqual(test_node.heuristic_manhattan(algo.goal), 5)
-        test_node = node.Node(None, None, [1, 2, 0, 3])
-        self.assertEqual(test_node.heuristic_manhattan(algo.goal), 0)
-        test_node = node.Node(None, None, [0, 1, 2, 3])
-        self.assertEqual(test_node.heuristic_manhattan(algo.goal), 3)
+        size = 2
+        goal = utils.create_goal(size)
+        test_node = node.Node(None, None, [1, 0, 2, 3], None, size, goal)
+        self.assertEqual(test_node.heuristic_manhattan(), 2)
+        test_node = node.Node(None, None, [0, 3, 2, 1], None, size, goal)
+        self.assertEqual(test_node.heuristic_manhattan(), 5)
+        test_node = node.Node(None, None, [1, 2, 0, 3], None, size, goal)
+        self.assertEqual(test_node.heuristic_manhattan(), 0)
+        test_node = node.Node(None, None, [0, 1, 2, 3], None, size, goal)
+        self.assertEqual(test_node.heuristic_manhattan(), 3)
 
-        algo.size = 3
-        algo.goal = utils.create_goal(algo.size)
-        test_node = node.Node(None, None, [1, 0, 2, 3, 4, 5, 6, 7, 8])
-        self.assertEqual(test_node.heuristic_manhattan(algo.goal), 11)
-        test_node = node.Node(None, None, algo.goal)
-        self.assertEqual(test_node.heuristic_manhattan(algo.goal), 0)
-        test_node = node.Node(None, None, [1, 2, 3, 0, 4, 5, 6, 7, 8])
-        self.assertEqual(test_node.heuristic_manhattan(algo.goal), 7)
-        test_node = node.Node(None, None, [1, 0, 2, 8, 4, 5, 7, 6, 3])
-        self.assertEqual(test_node.heuristic_manhattan(algo.goal), 5)
+        size = 3
+        goal = utils.create_goal(size)
+        test_node = node.Node(None, None, [1, 0, 2, 3, 4, 5, 6, 7, 8], None, size, goal)
+        self.assertEqual(test_node.heuristic_manhattan(), 11)
+        test_node = node.Node(None, None, goal, None, size, goal)
+        self.assertEqual(test_node.heuristic_manhattan(), 0)
+        test_node = node.Node(None, None, [1, 2, 3, 0, 4, 5, 6, 7, 8], None, size, goal)
+        self.assertEqual(test_node.heuristic_manhattan(), 7)
+        test_node = node.Node(None, None, [1, 0, 2, 8, 4, 5, 7, 6, 3], None, size, goal)
+        self.assertEqual(test_node.heuristic_manhattan(), 5)
 
-        algo.size = 4
-        algo.goal = utils.create_goal(algo.size)
-        test_node = node.Node(None, None, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15])
-        self.assertEqual(test_node.heuristic_manhattan(algo.goal), 31)
-        test_node = node.Node(None, None, algo.goal)
-        self.assertEqual(test_node.heuristic_manhattan(algo.goal), 0)
+        size = 4
+        goal = utils.create_goal(size)
+        test_node = node.Node(None, None, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], None, size, goal)
+        self.assertEqual(test_node.heuristic_manhattan(), 31)
+        test_node = node.Node(None, None, goal, None, size, goal)
+        self.assertEqual(test_node.heuristic_manhattan(), 0)
 
     def test_improved_heuristic_manhattan(self):
-        algo.size = 2
-        algo.goal = utils.create_goal(algo.size)
-        test_node = node.Node(None, None, [1, 0, 2, 3])
-        self.assertEqual(test_node.improved_heuristic_manhattan(algo.goal), 2)
-        test_node = node.Node(None, None, [0, 3, 2, 1])
-        self.assertEqual(test_node.improved_heuristic_manhattan(algo.goal), 5)
-        test_node = node.Node(None, None, [1, 2, 0, 3])
-        self.assertEqual(test_node.improved_heuristic_manhattan(algo.goal), 0)
-        test_node = node.Node(None, None, [0, 1, 2, 3])
-        self.assertEqual(test_node.improved_heuristic_manhattan(algo.goal), 3)
+        size = 2
+        goal = utils.create_goal(size)
+        test_node = node.Node(None, None, [1, 0, 2, 3], None, size, goal)
+        self.assertEqual(test_node.improved_heuristic_manhattan(), 2)
+        test_node = node.Node(None, None, [0, 3, 2, 1], None, size, goal)
+        self.assertEqual(test_node.improved_heuristic_manhattan(), 5)
+        test_node = node.Node(None, None, [1, 2, 0, 3], None, size, goal)
+        self.assertEqual(test_node.improved_heuristic_manhattan(), 0)
+        test_node = node.Node(None, None, [0, 1, 2, 3], None, size, goal)
+        self.assertEqual(test_node.improved_heuristic_manhattan(), 3)
 
-        algo.size = 3
-        algo.goal = utils.create_goal(algo.size)
-        test_node = node.Node(None, None, [1, 0, 2, 3, 4, 5, 6, 7, 8])
-        self.assertEqual(test_node.improved_heuristic_manhattan(algo.goal), 13)
-        test_node = node.Node(None, None, algo.goal)
-        self.assertEqual(test_node.improved_heuristic_manhattan(algo.goal), 0)
-        test_node = node.Node(None, None, [1, 2, 3, 0, 4, 5, 6, 7, 8])
-        self.assertEqual(test_node.improved_heuristic_manhattan(algo.goal), 9)
-        test_node = node.Node(None, None, [1, 0, 2, 8, 4, 5, 7, 6, 3])
-        self.assertEqual(test_node.improved_heuristic_manhattan(algo.goal), 7)
+        size = 3
+        goal = utils.create_goal(size)
+        test_node = node.Node(None, None, [1, 0, 2, 3, 4, 5, 6, 7, 8], None, size, goal)
+        self.assertEqual(test_node.improved_heuristic_manhattan(), 13)
+        test_node = node.Node(None, None, goal, None, size, goal)
+        self.assertEqual(test_node.improved_heuristic_manhattan(), 0)
+        test_node = node.Node(None, None, [1, 2, 3, 0, 4, 5, 6, 7, 8], None, size, goal)
+        self.assertEqual(test_node.improved_heuristic_manhattan(), 9)
+        test_node = node.Node(None, None, [1, 0, 2, 8, 4, 5, 7, 6, 3], None, size, goal)
+        self.assertEqual(test_node.improved_heuristic_manhattan(), 7)
 
-        algo.size = 4
-        algo.goal = utils.create_goal(algo.size)
-        test_node = node.Node(None, None, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15])
-        self.assertEqual(test_node.improved_heuristic_manhattan(algo.goal), 33)
-        test_node = node.Node(None, None, algo.goal)
-        self.assertEqual(test_node.improved_heuristic_manhattan(algo.goal), 0)
+        size = 4
+        goal = utils.create_goal(size)
+        test_node = node.Node(None, None, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], None, size, goal)
+        self.assertEqual(test_node.improved_heuristic_manhattan(), 33)
+        test_node = node.Node(None, None, goal, None, size, goal)
+        self.assertEqual(test_node.improved_heuristic_manhattan(), 0)
 
     def test_find_possible_actions(self):
-        algo.size = 2
-        algo.goal = utils.create_goal(algo.size)
-        test_node = node.Node(None, None, [0, 3, 2, 1])
+        size = 2
+        goal = utils.create_goal(size)
+        test_node = node.Node(None, None, [0, 3, 2, 1], None, size, goal)
         self.assertEqual(test_node.find_possible_actions(), [3, 2])
-        test_node = node.Node(None, None, [1, 2, 0, 3])
+        test_node = node.Node(None, None, [1, 2, 0, 3], None, size, goal)
         self.assertEqual(test_node.find_possible_actions(), [3, 1])
-        test_node = node.Node(None, 2, [0, 1, 2, 3])
+        test_node = node.Node(None, 2, [0, 1, 2, 3], None, size, goal)
         self.assertEqual(test_node.find_possible_actions(), [1])
 
-        algo.size = 3
-        algo.goal = utils.create_goal(algo.size)
-        test_node = node.Node(None, None, [1, 0, 2, 3, 4, 5, 6, 7, 8])
+        size = 3
+        goal = utils.create_goal(size)
+        test_node = node.Node(None, None, [1, 0, 2, 3, 4, 5, 6, 7, 8], None, size, goal)
         self.assertEqual(test_node.find_possible_actions(), [1, 2, 4])
-        test_node = node.Node(None, None, [1, 2, 3, 0, 4, 5, 6, 7, 8])
+        test_node = node.Node(None, None, [1, 2, 3, 0, 4, 5, 6, 7, 8], None, size, goal)
         self.assertEqual(test_node.find_possible_actions(), [4, 1, 6])
-        test_node = node.Node(None, 1, [1, 0, 2, 8, 4, 5, 7, 6, 3])
+        test_node = node.Node(None, 1, [1, 0, 2, 8, 4, 5, 7, 6, 3], None, size, goal)
         self.assertEqual(test_node.find_possible_actions(), [2, 4])
 
-        algo.size = 4
-        algo.goal = utils.create_goal(algo.size)
-        test_node = node.Node(None, 6, [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 10, 11, 12, 13, 14, 15])
+        size = 4
+        goal = utils.create_goal(size)
+        test_node = node.Node(None, 6, [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 10, 11, 12, 13, 14, 15], None, size, goal)
         self.assertEqual(test_node.find_possible_actions(), [9, 10, 13])
 
     def test_create_goal(self):
-        algo.size = 2
-        algo.goal = utils.create_goal(algo.size)
-        self.assertEqual(algo.goal, [1, 2, 0, 3])
+        size = 2
+        goal = utils.create_goal(size)
+        self.assertEqual(goal, [1, 2, 0, 3])
 
-        algo.size = 3
-        algo.goal = utils.create_goal(algo.size)
-        self.assertEqual(algo.goal, [1, 2, 3, 8, 0, 4, 7, 6, 5])
+        size = 3
+        goal = utils.create_goal(size)
+        self.assertEqual(goal, [1, 2, 3, 8, 0, 4, 7, 6, 5])
 
-        algo.size = 4
-        algo.goal = utils.create_goal(algo.size)
-        self.assertEqual(algo.goal, [1, 2, 3, 4, 12, 13, 14, 5, 11, 0, 15, 6, 10, 9, 8, 7])
+        size = 4
+        goal = utils.create_goal(size)
+        self.assertEqual(goal, [1, 2, 3, 4, 12, 13, 14, 5, 11, 0, 15, 6, 10, 9, 8, 7])
 
     def test_action(self):
         puzzle = [0, 1, 2, 3]

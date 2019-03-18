@@ -153,6 +153,7 @@ The steps to solve it are the following {}""".format(
 
 
 if __name__ == "__main__":
+    size = 3
     # init_state = [1, 2, 8, 3, 4, 7, 5, 6, 0]
     # init_state = [4, 6, 5, 0, 2, 1, 7, 8, 3]  # 25 etapes?
     # init_state = [6, 4, 5, 0, 2, 1, 7, 8, 3] # classic
@@ -162,6 +163,21 @@ if __name__ == "__main__":
     init_state[size] = init_state[size + 1]
     init_state[size + 1] = tmp
     print(utils.puzzle_formatted_str(init_state))
-    init_node = node.Node(None, None, init_state)
-
+    algo_info = {
+        "heuristic": "improved_manhattan",
+        "search_algo": "ida_star",
+        "goal_kind": "snail",
+        "verbose": False,
+        "error": '',
+        "depth_limit": None,
+        "time_complexity": 1,
+        "space_complexity": 1,
+        "start_time": None,
+        "board_size": 0,
+        "show_time": True,
+        "show_visu": False,
+        "visu_mode": False
+    }
+    goal = utils.create_goal(size)
+    init_node = node.Node(None, None, init_state, size=size, heuristic_kind=algo_info['heuristic'], goal=goal)
     algo(init_node, algo_info)

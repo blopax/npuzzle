@@ -1,7 +1,3 @@
-
-import re
-
-
 def strip_comment(line):
     """
     Clean lines that have comments.
@@ -15,14 +11,13 @@ def strip_comment(line):
     return line.strip()
 
 
-def clean_data(algo_info, data) -> list:
+def clean_data(f) -> list:
     """
     Clean the data contained in the input file.
-    :param dict algo_info: dict containing all the necessary information to run the program
-    :param list data: output of the open() function from the file
+    :param f: output of the open() function from the file
     :return str: clean_data_int: input data cleaned(cated to int, arranged into lists)
     """
-    raw = data.read()
+    raw = f.read()
     newline_split = raw.split('\n')
     uncommented = []
 
@@ -32,13 +27,13 @@ def clean_data(algo_info, data) -> list:
     no_empty_strings = list(filter(None, uncommented))
     no_double_spaces = [' '.join(each.split()) for each in no_empty_strings]
 
-    clean_data = [each.split(' ') for each in no_double_spaces]
-    clean_data_int = []
+    cleaaned_data = [each.split(' ') for each in no_double_spaces]
+    cleaaned_data_int = []
 
-    for each in clean_data:
-        clean_data_int.append([int(numbers) for numbers in each])
+    for each in cleaaned_data:
+        cleaaned_data_int.append([int(numbers) for numbers in each])
 
-    return clean_data_int
+    return cleaaned_data_int
 
 
 def check_first_line(algo_info, data):
@@ -48,8 +43,8 @@ def check_first_line(algo_info, data):
     :param list data: list of int created by the clean_data function
     """
     if len(data) != 1 or data[0] < 2 or type(data[0]) != int:
-        algo_info["error"] += "The first line of the file containing the size of the puzzle is not correctly formatted (desired input : single integer (>2) - received input: {0})\n".format(
-            data)
+        algo_info["error"] += ("The first line of the file containing the size of the puzzle is not correctly "
+                               "formatted (desired input : single integer (>2) - received input: {0})\n".format(data))
         algo_info["board_size"] = 0
     algo_info["board_size"] = data[0]
 
@@ -68,12 +63,12 @@ def check_lenght(algo_info, data):
 
     for index, each in enumerate(size_lst):
         if each != algo_info["board_size"]:
-            algo_info["error"] += "The width of the puzzle in line {1} does not equal the size of the puzzle (width: {0} // size: {2})\n".format(
-                each, index, algo_info["board_size"])
+            algo_info["error"] += ("The width of the puzzle in line {1} does not equal the size of the puzzle (width: "
+                                   "{0} // size: {2})\n".format(each, index, algo_info["board_size"]))
 
     if line_nb != algo_info["board_size"]:
-        algo_info["error"] += "The number of lines of the puzzle does not equal the size of the puzzle (nb_lines: {0} // size: {1})".format(
-            line_nb, algo_info["board_size"])
+        algo_info["error"] += ("The number of lines of the puzzle does not equal the size of the puzzle "
+                               "(nb_lines: {0} // size: {1})".format(line_nb, algo_info["board_size"]))
 
 
 def check_values(algo_info, data):
@@ -90,8 +85,8 @@ def check_values(algo_info, data):
 
     diff = set(expected_values) - set(actual_values)
     if diff:
-        algo_info["error"] += "The puzzle does not contain the expected values considering his size {0}. Missing value(s): {1}".format(
-            algo_info["board_size"], diff)
+        algo_info["error"] += ("The puzzle does not contain the expected values considering his size {0}. "
+                               "Missing value(s): {1}".format(algo_info["board_size"], diff))
     else:
         algo_info["puzzle"] = actual_values
 
@@ -100,14 +95,14 @@ def check_file(algo_info, puzzle_file):
     """
     Check every aspects of the input file
     :param dict algo_info: dict containing all the necessary information to run the program
-    :param str pu: list of list of int representing the values of the puzzle to solve
+    :param str puzzle_file: list of list of int representing the values of the puzzle to solve
     """
     try:
         with open(puzzle_file, 'r') as f:
-            data_puzzle = clean_data(algo_info, f)
+            data_puzzle = clean_data(f)
 
         print(data_puzzle)
-        if data_puzzle == []:
+        if not data_puzzle:
             raise Exception("EmptyFile")
 
         check_first_line(algo_info, data_puzzle[0])

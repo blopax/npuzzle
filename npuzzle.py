@@ -1,5 +1,5 @@
 import argparse
-import parser
+import parsing
 import algo
 import node
 import utils
@@ -31,12 +31,13 @@ if __name__ == "__main__":
     args = get_args()
     algo_info = utils.create_info_algo(args)
     if os.path.isfile(args.file):
-        parser.check_file(algo_info, args.file)
+        parsing.check_file(algo_info, args.file)
     else:
         algo_info["error"] = "{0} is not a valid file".format(args.file)
     if algo_info["error"] == '':
         algo_info["goal"] = utils.create_goal(algo_info["board_size"], algo_info["goal_kind"])
-        init_node = node.Node(None, None, algo_info["puzzle"], algo_info["heuristic"], algo_info["board_size"], algo_info["goal"])
+        init_node = node.Node(None, None, algo_info["puzzle"], algo_info["heuristic"],
+                              algo_info["board_size"], algo_info["goal"])
         algo.algo(init_node, algo_info)
     else:
         print(algo_info["error"])
