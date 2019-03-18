@@ -69,7 +69,7 @@ If the visualization option is triggered, a visual result is displayed. (2 optio
 fight mode where the player can try to beat the computer)
 
 
-IMAGE / GIPHY
+![N-puzzle visualization](https://giphy.com/gifs/52EXUZ3c5vt9P5yMuG)
 
 
 ## Unit tests
@@ -78,4 +78,4 @@ Those tests are mainly for heuristic, actions on puzzle (sliding a tile) and pre
 
 
 ## General learning on N-puzzle
-Show some results
+Show some results.
