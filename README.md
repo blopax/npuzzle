@@ -17,13 +17,14 @@ Create a program which solves N-puzzles (https://en.wikipedia.org/wiki/15_puzzle
 ### How to run the program
 You must have python3 installed.  
 Run `source set_env.sh`. It will crete a virtualenv and install the necessary packages.  
-Run the program as follow:  
-`npuzzle.py [-h] [-f FILE] [-he {manhattan,misplaced,distance}]  
-                  [-a {a_star,ida_star,greedy,uniform_cost}] [-v {0,1,2,3}]  
-                  [-visu {False,True}] [-p {classic,snail}]`
 
-A changer
+Run the program as follow:
 
+<pre>npuzzle.py      [-h] -f FILE [-s {manhattan,misplaced,improved_manhattan}]  
+                [-a {a_star,ida_star,greedy,uniform_cost}] [-v {False,True}]    
+                [-t {False,True}] [-visu {False,True}]  
+                [-visumode {fight,solution}] [-p {snail,classic}]  
+</pre>
 The only required input is the input file (`-f filepath`). The rest are options.
 
 
@@ -52,6 +53,9 @@ The program will search for the goal and return the path to solve a solution:
 
 If the visualization option is triggered, a visual result is displayed. (2 options either just the computer solution or a 
 fight mode where the player can try to beat the computer)
+
+
+## Unit tests
 
 
 ## General learning on N-puzzle

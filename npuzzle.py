@@ -5,10 +5,9 @@ import node
 import utils
 
 
-
 def get_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument("-f", "--file", type=str, required= True,
+    parser.add_argument("-f", "--file", type=str, required=True,
                         help="Name of the file containing the npuzzle. File must be absolute path.\n")
     parser.add_argument("-s", "--heuristic", type=str, default="improved_manhattan",
                         choices=["manhattan", "misplaced", "improved_manhattan"],
@@ -16,9 +15,9 @@ def get_args():
     parser.add_argument("-a", "--algorithm", type=str, default="a_star",
                         choices=["a_star", "ida_star", "greedy", "uniform_cost"],
                         help="Choose the algorithm to be used.\n")
-    parser.add_argument("-v", "--verbosity", type=int, default=False, choices={True, False},
+    parser.add_argument("-v", "--verbosity", type=bool, default=False, choices={True, False},
                         help="Verbose mode.\n")
-    parser.add_argument("-t", "--time", type=str, default=False, choices={False, True},
+    parser.add_argument("-t", "--time", type=bool, default=False, choices={False, True},
                         help="Show the time needed to resolve the npuzzle.\n")
     parser.add_argument("-visu", "--visual", type=bool, default=False, choices={False, True},
                         help="Toggle Visual mode.\n")
@@ -40,7 +39,3 @@ if __name__ == "__main__":
         algo.algo(init_node, algo_info)
     else:
         print(algo_info["error"])
-
-
-# parser add relevant info and feed info dictionary (where +, maybe create util functions with default)
-# + create initial Node

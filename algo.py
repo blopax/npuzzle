@@ -137,9 +137,9 @@ def finished(finish_node, info) -> None:
             finish_node = finish_node.parent
             solution_list.insert(0, finish_node)
         print("""
-        This problem can be solved in {} steps.
-        The time_complexity is {} and space_complexity is {}
-        The steps to solve it are the following {}""".format(
+This problem can be solved in {} steps.
+The time_complexity is {} and space_complexity is {}
+The steps to solve it are the following {}""".format(
             len(solution_list) - 1, info['time_complexity'], info['space_complexity'],
             [item.moved_tile for item in solution_list[1:]]))
         if info['show_time']:
