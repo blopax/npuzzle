@@ -171,7 +171,7 @@ def write_info(window, x_position, content, solved) -> None:
     :param bool solved: Boolean that says if puzzle is solved or not
     :return None:
     """
-    basic_font = pygame.font.Font('Helvetica-Normal.ttf', 20)
+    basic_font = pygame.font.Font('freesansbold.ttf', 20)
 
     for index, item in enumerate(content):
         text_surf = basic_font.render(item, False, (123, 0, 0), (0, 0, 0))
