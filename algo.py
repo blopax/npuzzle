@@ -48,7 +48,7 @@ def search_algo(initial_node, info) -> None:
                 if new_node.finished is True:
                     return finished(new_node, info)
         nodes_queue.remove(best_node)
-        nodes_queue = sort_queue(nodes_queue, info['search_algo'])
+        sort_queue(nodes_queue, info['search_algo'])
     return finished(None, info)
 
 
@@ -89,21 +89,19 @@ def search_ida_star(initial_node, info) -> None:
         return finished(None, info)
 
 
-def sort_queue(queue, mode) -> list:
+def sort_queue(queue, mode) -> None:
     """
     Queue is sorted according to mode
     :param list queue:
     :param str mode:
-    :return list sorted_queue:
+    :return None:
     """
-    sorted_queue = None
     if mode == "a_star":
-        sorted_queue = sorted(queue, key=lambda x: x.evaluation)
+        queue.sort(key=lambda x: x.evaluation)
     elif mode == "greedy":
-        sorted_queue = sorted(queue, key=lambda x: x.heuristic)
+        queue.sort(key=lambda x: x.evaluation)
     elif mode == "uniform_cost":
-        sorted_queue = sorted(queue, key=lambda x: x.cost)
-    return sorted_queue
+        queue.sort(key=lambda x: x.evaluation)
 
 
 def verbose_print(info, sorted_queue, new_node) -> None:
