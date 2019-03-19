@@ -18,7 +18,7 @@ def get_args():
                         help="Choose the algorithm to be used.\n")
     parser.add_argument("-v", "--verbosity", action="store_true", help="Toggle verbose mode.\n")
     parser.add_argument("-t", "--time", action="store_true", help="Show the time needed to resolve the npuzzle.\n")
-    parser.add_argument("-visu", "--visual", action="store_true", help="Toggle Visual mode.\n")
+    parser.add_argument("-visu", "--visual", action="store_true", help="Toggle visual mode.\n")
     parser.add_argument("-visumode", "--visual_mode", type=str, default="fight", choices={"fight", "solution"},
                         help="Define the type of visual.\n")
     parser.add_argument("-p", "--puzzle", type=str, default="snail", choices={"snail", "classic"},
