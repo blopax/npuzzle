@@ -1,6 +1,6 @@
 [[4], [8, 12, 7, 5], [10, 9, 6, 2], [4, 15, 3, 1], [0, 11, 14, 13]]
 
 This problem can be solved in 58 steps.
-The time_complexity is 24107339 and space_complexity is 3361026
+The time_complexity is 177113951 and space_complexity is 14958450
 The steps to solve it are the following [11, 15, 4, 11, 15, 14, 3, 6, 7, 5, 2, 1, 6, 7, 1, 6, 7, 4, 9, 1, 4, 3, 13, 7, 6, 4, 5, 2, 4, 5, 3, 13, 14, 9, 11, 10, 8, 12, 1, 8, 12, 1, 2, 3, 13, 14, 9, 15, 10, 11, 8, 13, 14, 8, 15, 9, 8, 15]
-Time used: 1841.94s
+Time used: 7204.43s

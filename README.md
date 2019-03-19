@@ -17,6 +17,8 @@ Create a program which solves N-puzzles (https://en.wikipedia.org/wiki/15_puzzle
 ### How to run the program
 You must have python3 installed.  
 Run `source set_env.sh`. It will crete a virtualenv and install the necessary packages.  
+If you would like some music and a 'swap sound' in your visual, put a 'music.mp3' and a 'sound.wav'
+file in your Downloads folder.
 
 Run the program as follow:
 
