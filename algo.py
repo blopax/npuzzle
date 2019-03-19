@@ -136,9 +136,10 @@ def finished(finish_node, info) -> None:
             solution_list.insert(0, finish_node)
         print("""
 This problem can be solved in {} steps.
+Algorithm used is {}.
 The time_complexity is {} and space_complexity is {}
 The steps to solve it are the following {}""".format(
-            len(solution_list) - 1, info['time_complexity'], info['space_complexity'],
+            len(solution_list) - 1, info['search_algo'], info['time_complexity'], info['space_complexity'],
             [item.moved_tile for item in solution_list[1:]]))
         if info['show_time']:
             print('Time used: {}s'.format(info['time']))
@@ -152,11 +153,7 @@ The steps to solve it are the following {}""".format(
 
 if __name__ == "__main__":
     size = 3
-    # init_state = [1, 2, 8, 3, 4, 7, 5, 6, 0]
-    # init_state = [4, 6, 5, 0, 2, 1, 7, 8, 3]  # 25 etapes?
-    # init_state = [6, 4, 5, 0, 2, 1, 7, 8, 3] # classic
     init_state = [i for i in range(size ** 2)]
-    # random.shuffle(init_state)
     tmp = init_state[size]
     init_state[size] = init_state[size + 1]
     init_state[size + 1] = tmp
