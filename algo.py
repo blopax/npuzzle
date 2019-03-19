@@ -99,9 +99,9 @@ def sort_queue(queue, mode) -> None:
     if mode == "a_star":
         queue.sort(key=lambda x: x.evaluation)
     elif mode == "greedy":
-        queue.sort(key=lambda x: x.evaluation)
+        queue.sort(key=lambda x: x.heuristic)
     elif mode == "uniform_cost":
-        queue.sort(key=lambda x: x.evaluation)
+        queue.sort(key=lambda x: x.cost)
 
 
 def verbose_print(info, sorted_queue, new_node) -> None:
