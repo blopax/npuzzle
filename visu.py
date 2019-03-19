@@ -64,13 +64,15 @@ def music_update(info, key=None) -> dict:
     :param event.key key: Key pressed by player
     :return dict info:
     """
+    music_path = os.environ['HOME'] + '/Downloads/music.mp3'
+    sound_path = os.environ['HOME'] + '/Downloads/sound.wav'
     if key is None:
-        if os.path.exists('music.mp3'):
-            pygame.mixer.music.load('music.mp3')
+        if os.path.exists(music_path):
+            pygame.mixer.music.load(music_path)
             pygame.mixer.music.play()
-        if os.path.exists('sound.wav'):
-            info['sound'] = pygame.mixer.Sound('sound.wav')
-    if key == pygame.K_m and os.path.exists('music.mp3'):
+        if os.path.exists(sound_path):
+            info['sound'] = pygame.mixer.Sound(sound_path)
+    if key == pygame.K_m and os.path.exists(music_path):
         pygame.mixer.music.stop()
     return info
 
@@ -89,8 +91,7 @@ def update_info(info, key) -> dict:
         play_sound = True
     if info['visu_mode'] != 'fight' and key == pygame.K_RIGHT and info['cpu_step'] < info['search_algo_best_solution']:
         info['cpu_step'] += 1
-        info['cpu_state'] = info['solution_list'][info['cpu_step']].state
-        play_sound = True
+        info['cpu_state'] = info['solution_list'][info['cpu_step']].stat
     if info['visu_mode'] != 'fight' and key == pygame.K_LEFT and info['cpu_step'] > 0:
         info['cpu_step'] -= 1
         info['cpu_state'] = info['solution_list'][info['cpu_step']].state
