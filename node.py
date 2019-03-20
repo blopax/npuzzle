@@ -138,5 +138,61 @@ finished = {}\n""".format(id(self.parent), self.moved_tile,
 
 
 if __name__ == "__main__":
-    initial_node = Node(None, None, [1, 0, 2, 3, 4, 5, 6, 7, 8])
+    initial_state = [1, 13, 11, 15, 14, 8, 9, 2, 7, 3, 0, 5, 6, 12, 4, 10]
+    puzzle_size = int(math.sqrt(len(initial_state)))
+    algo_info = {
+        "heuristic": "improved_manhattan",
+        "search_algo": "a_star",
+        "goal_kind": "snail",
+        "verbose": False,
+        "error": '',
+        "depth_limit": None,
+        "time_complexity": 1,
+        "space_complexity": 1,
+        "start_time": None,
+        "board_size": 0,
+        "show_time": True,
+        "show_visu": False,
+        "visu_mode": False
+    }
+    p_goal = utils.create_goal(puzzle_size)
+    initial_node = Node(None, None, initial_state, size=puzzle_size, heuristic_kind=algo_info['heuristic'], goal=p_goal)
     print(initial_node.__str__())
+    node_1 = Node(initial_node, 9)
+    print(node_1.__str__())
+    new_node = Node(node_1, 8)
+    print(new_node.__str__())
+    new_node = Node(new_node, 3)
+    print(new_node.__str__())
+    new_node = Node(new_node, 9)
+    print(new_node.__str__())
+    new_node = Node(new_node, 4)
+    print(new_node.__str__())
+    new_node = Node(new_node, 10)
+    print(new_node.__str__())
+    new_node = Node(new_node, 5)
+    print(new_node.__str__())
+    new_node = Node(new_node, 4)
+    print(new_node.__str__())
+    new_node = Node(new_node, 9)
+    print(new_node.__str__())
+    new_node = Node(new_node, 7)
+    print(new_node.__str__())
+
+    print("\n________________________")
+    node_2 = Node(initial_node, 4)
+    print(node_2.__str__())
+    new_node = Node(node_2, 10)
+    print(new_node.__str__())
+    new_node = Node(new_node, 5)
+    print(new_node.__str__())
+    new_node = Node(new_node, 4)
+    print(new_node.__str__())
+    new_node = Node(new_node, 9)
+    print(new_node.__str__())
+    new_node = Node(new_node, 8)
+    print(new_node.__str__())
+    new_node = Node(new_node, 3)
+    print(new_node.__str__())
+    new_node = Node(new_node, 7)
+    print(new_node.__str__())

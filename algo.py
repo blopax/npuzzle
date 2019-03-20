@@ -32,17 +32,17 @@ def search_algo(initial_node, info) -> None:
     :return: None
     """
     nodes_queue = [initial_node]
-    explored_states = {(tuple(initial_node.state),)}
+    explored_states = {tuple(initial_node.state): 0}
     while nodes_queue:
         best_node = nodes_queue[0]
         for action in best_node.possible_actions:
             state = utils.action(best_node.state, action)
-            if tuple(state) not in explored_states:
+            if should_add_node(state, explored_states, best_node.cost):
                 new_node = node.Node(best_node, action, state)
                 info['time_complexity'] += 1
                 nodes_queue.append(new_node)
-                explored_states.add(tuple(new_node.state))
-                info['space_complexity'] = max(info['space_complexity'], len(explored_states))
+                explored_states[tuple(new_node.state)] = new_node.cost
+                info['space_complexity'] += 1
                 if info['verbose']:
                     verbose_print(info, nodes_queue, new_node)
                 if new_node.finished is True:
@@ -60,33 +60,43 @@ def search_ida_star(initial_node, info) -> None:
     :return: None
     """
     nodes_queue = [initial_node]
-    explored_states = {(tuple(initial_node.state),)}
+    explored_states = {tuple(initial_node.state): 0}
     if info['depth_limit'] is None:
         info['depth_limit'] = initial_node.evaluation
     info['new_depth_limit'] = None
     while nodes_queue:
         best_node = nodes_queue[0]
         for action in best_node.possible_actions:
-            info['time_complexity'] += 1
-            new_node = node.Node(best_node, action)
-            if new_node.evaluation <= info['depth_limit']:
-                nodes_queue.insert(0, new_node)
-                explored_states.add(tuple(new_node.state))
-                info['space_complexity'] = max(info['space_complexity'], len(explored_states))
-                if info['verbose']:
-                    verbose_print(info, nodes_queue, new_node)
-                if new_node.finished is True:
-                    return finished(new_node, info)
-            elif info['new_depth_limit'] is None:
-                info['new_depth_limit'] = new_node.evaluation
-            else:
-                info['new_depth_limit'] = min(info['new_depth_limit'], new_node.evaluation)
+            state = utils.action(best_node.state, action)
+            if should_add_node(state, explored_states, best_node.cost):
+                new_node = node.Node(best_node, action, state)
+                info['time_complexity'] += 1
+                if new_node.evaluation <= info['depth_limit']:
+                    nodes_queue.insert(0, new_node)
+                    explored_states[tuple(new_node.state)] = new_node.cost
+                    info['space_complexity'] = max(info['space_complexity'], len(explored_states))
+                    if info['verbose']:
+                        verbose_print(info, nodes_queue, new_node)
+                    if new_node.finished is True:
+                        return finished(new_node, info)
+                elif info['new_depth_limit'] is None:
+                    info['new_depth_limit'] = new_node.evaluation
+                else:
+                    info['new_depth_limit'] = min(info['new_depth_limit'], new_node.evaluation)
         nodes_queue.remove(best_node)
     if info['new_depth_limit'] is not None:
         info['depth_limit'] = info['new_depth_limit']
         search_ida_star(initial_node, info)
     else:
         return finished(None, info)
+
+
+def should_add_node(state, explored_states, node_cost):
+    if tuple(state) not in explored_states:
+        return True
+    if explored_states[tuple(state)] > node_cost + 1:
+        return True
+    return False
 
 
 def sort_queue(queue, mode) -> None:
