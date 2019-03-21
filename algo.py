@@ -1,6 +1,7 @@
 import node
 import utils
 import time
+import queue
 
 
 def algo(initial_node, info) -> None:
@@ -12,15 +13,14 @@ def algo(initial_node, info) -> None:
     :return: None
     """
 
+    info['time'] = time.time()
     if utils.puzzle_has_solution(initial_node.state, info['goal_kind']) is False:
         return finished(None, info)
     if initial_node.finished is True:
         return finished(initial_node, info)
     if info['search_algo'] == 'ida_star':
-        info['time'] = time.time()
         return search_ida_star(initial_node, info)
     else:
-        info['time'] = time.time()
         return search_algo(initial_node, info)
 
 
@@ -31,24 +31,22 @@ def search_algo(initial_node, info) -> None:
     :param dict info: Dict with relevant info for algo
     :return: None
     """
-    nodes_queue = [initial_node]
+    open_set = queue.Queue(initial_node=initial_node, mode=info['search_algo'])
     explored_states = {tuple(initial_node.state): 0}
-    while nodes_queue:
-        best_node = nodes_queue[0]
+    while open_set.priority_queue:
+        best_node = open_set.priority_queue.pop(0)
         for action in best_node.possible_actions:
             state = utils.action(best_node.state, action)
             if should_add_node(state, explored_states, best_node.cost):
                 new_node = node.Node(best_node, action, state)
                 info['time_complexity'] += 1
-                nodes_queue.append(new_node)
+                open_set.insert_node(new_node)
                 explored_states[tuple(new_node.state)] = new_node.cost
                 info['space_complexity'] += 1
                 if info['verbose']:
-                    verbose_print(info, nodes_queue, new_node)
+                    verbose_print(info, open_set.priority_queue.nodes_queue, new_node)
                 if new_node.finished is True:
                     return finished(new_node, info)
-        nodes_queue.remove(best_node)
-        sort_queue(nodes_queue, info['search_algo'])
     return finished(None, info)
 
 
@@ -59,31 +57,30 @@ def search_ida_star(initial_node, info) -> None:
     :param dict info: Dict with relevant info for algo
     :return: None
     """
-    nodes_queue = [initial_node]
+    open_set = queue.Queue(initial_node=initial_node, mode=info['search_algo'])
     explored_states = {tuple(initial_node.state): 0}
     if info['depth_limit'] is None:
         info['depth_limit'] = initial_node.evaluation
     info['new_depth_limit'] = None
-    while nodes_queue:
-        best_node = nodes_queue[0]
+    while open_set.priority_queue:
+        best_node = open_set.priority_queue.pop(0)
         for action in best_node.possible_actions:
             state = utils.action(best_node.state, action)
             if should_add_node(state, explored_states, best_node.cost):
                 new_node = node.Node(best_node, action, state)
                 info['time_complexity'] += 1
                 if new_node.evaluation <= info['depth_limit']:
-                    nodes_queue.insert(0, new_node)
+                    open_set.insert_node(new_node)
                     explored_states[tuple(new_node.state)] = new_node.cost
                     info['space_complexity'] = max(info['space_complexity'], len(explored_states))
                     if info['verbose']:
-                        verbose_print(info, nodes_queue, new_node)
+                        verbose_print(info, open_set.priority_queue, new_node)
                     if new_node.finished is True:
                         return finished(new_node, info)
                 elif info['new_depth_limit'] is None:
                     info['new_depth_limit'] = new_node.evaluation
                 else:
                     info['new_depth_limit'] = min(info['new_depth_limit'], new_node.evaluation)
-        nodes_queue.remove(best_node)
     if info['new_depth_limit'] is not None:
         info['depth_limit'] = info['new_depth_limit']
         search_ida_star(initial_node, info)
@@ -97,21 +94,6 @@ def should_add_node(state, explored_states, node_cost):
     if explored_states[tuple(state)] > node_cost + 1:
         return True
     return False
-
-
-def sort_queue(queue, mode) -> None:
-    """
-    Queue is sorted according to mode
-    :param list queue:
-    :param str mode:
-    :return None:
-    """
-    if mode == "a_star":
-        queue.sort(key=lambda x: x.evaluation)
-    elif mode == "greedy":
-        queue.sort(key=lambda x: x.heuristic)
-    elif mode == "uniform_cost":
-        queue.sort(key=lambda x: x.cost)
 
 
 def verbose_print(info, sorted_queue, new_node) -> None:
