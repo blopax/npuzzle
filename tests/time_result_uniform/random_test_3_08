@@ -1,0 +1,7 @@
+[[3], [4, 6, 3], [7, 5, 8], [0, 2, 1]]
+
+This problem can be solved in 26 steps.
+Algorithm used is uniform_cost.
+The time_complexity is 156237 and space_complexity is 156237
+The steps to solve it are the following [2, 1, 8, 5, 7, 4, 6, 7, 4, 2, 1, 8, 5, 4, 7, 6, 2, 1, 8, 7, 6, 2, 1, 8, 7, 6]
+Time used: 446.08s

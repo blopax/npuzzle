@@ -1,6 +1,7 @@
 [[4], [10, 13, 7, 4], [0, 6, 3, 12], [15, 14, 11, 5], [9, 8, 1, 2]]
 
 This problem can be solved in 90 steps.
-The time_complexity is 791 and space_complexity is 791
+Algorithm used is greedy.
+The time_complexity is 827 and space_complexity is 827
 The steps to solve it are the following [15, 14, 11, 1, 8, 11, 14, 15, 10, 13, 7, 3, 1, 14, 6, 1, 12, 5, 14, 6, 15, 10, 1, 7, 13, 1, 7, 12, 6, 15, 11, 9, 10, 7, 12, 13, 1, 12, 7, 11, 13, 7, 12, 1, 7, 13, 15, 14, 2, 8, 14, 6, 5, 2, 6, 14, 8, 6, 2, 5, 14, 2, 5, 14, 2, 15, 13, 2, 14, 4, 3, 7, 2, 14, 7, 3, 4, 5, 15, 7, 14, 13, 9, 8, 7, 15, 6, 7, 8, 9]
-Time used: 0.07s
+Time used: 0.08s

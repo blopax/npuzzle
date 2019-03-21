@@ -1,0 +1,7 @@
+[[3], [8, 3, 0], [4, 2, 1], [6, 5, 7]]
+
+This problem can be solved in 24 steps.
+Algorithm used is ida_star.
+The time_complexity is 3561 and space_complexity is 1121
+The steps to solve it are the following [1, 7, 5, 2, 3, 1, 7, 3, 4, 8, 1, 7, 3, 4, 7, 1, 8, 7, 2, 6, 7, 8, 1, 2]
+Time used: 0.09s

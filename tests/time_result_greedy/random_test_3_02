@@ -1,6 +1,7 @@
 [[3], [5, 2, 8], [1, 0, 6], [7, 4, 3]]
 
 This problem can be solved in 36 steps.
-The time_complexity is 182 and space_complexity is 182
+Algorithm used is greedy.
+The time_complexity is 183 and space_complexity is 183
 The steps to solve it are the following [6, 3, 4, 6, 2, 5, 1, 2, 5, 8, 3, 5, 2, 7, 6, 4, 5, 2, 4, 6, 7, 4, 2, 3, 8, 2, 4, 1, 2, 8, 3, 4, 8, 2, 1, 8]
 Time used: 0.01s

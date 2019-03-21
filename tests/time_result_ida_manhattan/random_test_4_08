@@ -1,0 +1,7 @@
+[[4], [5, 9, 15, 12], [7, 3, 2, 10], [8, 14, 4, 6], [0, 1, 11, 13]]
+
+This problem can be solved in 60 steps.
+Algorithm used is ida_star.
+The time_complexity is 24169834 and space_complexity is 7213305
+The steps to solve it are the following [8, 7, 3, 2, 15, 9, 5, 3, 2, 14, 1, 11, 13, 6, 10, 15, 4, 10, 15, 4, 9, 5, 14, 1, 7, 8, 11, 7, 10, 13, 7, 10, 13, 9, 5, 12, 4, 5, 12, 14, 3, 2, 1, 12, 14, 3, 2, 1, 12, 13, 8, 11, 10, 8, 9, 15, 6, 7, 8, 9]
+Time used: 1010.33s

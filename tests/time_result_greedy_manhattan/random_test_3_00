@@ -1,0 +1,7 @@
+[[3], [8, 3, 0], [4, 2, 1], [6, 5, 7]]
+
+This problem can be solved in 34 steps.
+Algorithm used is greedy.
+The time_complexity is 443 and space_complexity is 443
+The steps to solve it are the following [3, 2, 1, 7, 5, 6, 4, 1, 7, 5, 6, 4, 1, 7, 4, 6, 5, 4, 6, 1, 7, 8, 2, 6, 1, 7, 8, 1, 6, 2, 1, 8, 7, 6]
+Time used: 0.02s

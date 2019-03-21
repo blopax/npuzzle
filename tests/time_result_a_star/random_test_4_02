@@ -1,0 +1,7 @@
+[[4], [1, 13, 11, 15], [0, 14, 8, 9], [7, 3, 5, 2], [6, 12, 4, 10]]
+
+This problem can be solved in 52 steps.
+Algorithm used is a_star.
+The time_complexity is 114429 and space_complexity is 114429
+The steps to solve it are the following [14, 8, 9, 2, 5, 4, 10, 5, 4, 9, 8, 3, 7, 6, 12, 10, 9, 7, 6, 12, 10, 9, 7, 8, 11, 13, 3, 11, 2, 4, 5, 7, 8, 6, 11, 2, 13, 15, 4, 5, 6, 13, 15, 3, 2, 14, 12, 11, 13, 15, 14, 13]
+Time used: 244.54s

@@ -1,7 +1,0 @@
-[[3], [1, 2, 7], [6, 4, 8], [5, 3, 0]]
-[1, 2, 3, 8, 0, 4, 7, 6, 5]
-
-This problem can be solved in 20 steps.
-The time_complexity is 329 and space_complexity is 329
-The steps to solve it are the following [3, 4, 8, 7, 2, 8, 7, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8]
-Time used: 0.02s

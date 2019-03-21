@@ -1,0 +1,7 @@
+[[3], [1, 3, 8], [4, 7, 5], [2, 6, 0]]
+
+This problem can be solved in 20 steps.
+Algorithm used is a_star.
+The time_complexity is 535 and space_complexity is 535
+The steps to solve it are the following [6, 2, 4, 7, 2, 6, 5, 8, 3, 2, 8, 5, 6, 4, 7, 8, 4, 6, 5, 4]
+Time used: 0.03s
