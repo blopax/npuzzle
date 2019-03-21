@@ -13,7 +13,7 @@ def get_args():
     parser.add_argument("-s", "--heuristic", type=str, default="improved_manhattan",
                         choices=["manhattan", "misplaced", "improved_manhattan"],
                         help="Choose the heuristic to be used.\n")
-    parser.add_argument("-a", "--algorithm", type=str, default="a_star",
+    parser.add_argument("-a", "--algorithm", type=str, default="ida_star",
                         choices=["a_star", "ida_star", "greedy", "uniform_cost"],
                         help="Choose the algorithm to be used.\n")
     parser.add_argument("-v", "--verbosity", action="store_true", help="Toggle verbose mode.\n")
