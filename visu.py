@@ -91,7 +91,7 @@ def update_info(info, key) -> dict:
         play_sound = True
     if info['visu_mode'] != 'fight' and key == pygame.K_RIGHT and info['cpu_step'] < info['search_algo_best_solution']:
         info['cpu_step'] += 1
-        info['cpu_state'] = info['solution_list'][info['cpu_step']].stat
+        info['cpu_state'] = info['solution_list'][info['cpu_step']].state
     if info['visu_mode'] != 'fight' and key == pygame.K_LEFT and info['cpu_step'] > 0:
         info['cpu_step'] -= 1
         info['cpu_state'] = info['solution_list'][info['cpu_step']].state
