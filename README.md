@@ -80,4 +80,4 @@ Those tests are mainly for heuristic, actions on puzzle (sliding a tile) and pre
 It is also included in CI.
 
 ## General learning on N-puzzle
-Show some results.
+Show some results...
