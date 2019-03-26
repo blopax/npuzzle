@@ -1,3 +1,6 @@
+[![Python 3.7](https://img.shields.io/badge/python-3.7-blue.svg)](https://www.python.org/downloads/release/python-360/)
+[![Build Status](https://travis-ci.com/blopax/npuzzle.png)](https://travis-ci.com/blopax/npuzzle)
+
 # n-puzzle
 
 N-puzzle solver in python 3.7.  
